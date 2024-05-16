@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:styled_text/tags/styled_text_tag.dart';
 import 'package:styled_text/widgets/styled_text.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
+import 'package:weather_share/core/utils/custom/show_privacy_dialog.dart';
 import 'package:weather_share/feature/register/presentation/privacy.dart';
 
 @RoutePage()
@@ -277,64 +278,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                           decorationColor: Colors.white),
                                       recognizer: TapGestureRecognizer()
                                         ..onTap = () {
-                                          showDialog(
-                                            barrierDismissible: true,
-                                            barrierColor:
-                                                Colors.black.withOpacity(0.25),
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                backgroundColor: Colors.white,
-                                                elevation: 0,
-                                                title: Center(
-                                                  child: Text(
-                                                    "隱私政策",
-                                                    style: textgetter
-                                                        .headlineMedium
-                                                        ?.copyWith(
-                                                            color: Color(
-                                                                0xff5A5A5A),
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .underline,
-                                                            decorationColor:
-                                                                Color(
-                                                                    0xff5A5A5A)),
-                                                  ),
-                                                ),
-                                                content: Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width *
-                                                      0.8,
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      0, 8.0, 0, 8.0),
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
-                                                      children: [
-                                                        StyledText(
-                                                          text: privacyPolicy,
-                                                          style: textgetter
-                                                              .bodyMedium
-                                                              ?.copyWith(
-                                                                  color: Color(
-                                                                      0xff385459)),
-                                                          tags: {
-                                                            'bold': StyledTextTag(
-                                                                style: textgetter
-                                                                    .bodyMedium
-                                                                    ?.copyWith(
-                                                                        fontWeight:
-                                                                            FontWeight.w700))
-                                                          },
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
+                                          ShowPrivacyDialog(context: context)
+                                              .call();
                                         },
                                     ),
                                   ],

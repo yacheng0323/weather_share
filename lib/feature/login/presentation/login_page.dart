@@ -160,7 +160,10 @@ class _LoginPageState extends State<LoginPage> {
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(4))),
-                            onPressed: () {},
+                            onPressed: () {
+                              AutoRouter.of(context)
+                                  .replace(const HomePageRoute());
+                            },
                             child: Text(
                               "登入",
                               style: textgetter.bodyMedium
