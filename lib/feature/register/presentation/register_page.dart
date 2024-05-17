@@ -23,7 +23,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController confirmPasswordController =
       TextEditingController();
   final TextEditingController nicknameController = TextEditingController();
-  final TextEditingController idcontroller = TextEditingController();
 
   @override
   void initState() {
@@ -36,7 +35,7 @@ class _RegisterPageState extends State<RegisterPage> {
     passwordController.dispose();
     confirmPasswordController.dispose();
     nicknameController.dispose();
-    idcontroller.dispose();
+
     super.dispose();
   }
 
@@ -208,36 +207,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
-                          margin: EdgeInsets.only(top: 8),
-                          height: 40,
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 85,
-                                child: Text("ID",
-                                    style: textgetter.bodyMedium
-                                        ?.copyWith(color: Colors.white)),
-                              ),
-                              SizedBox(
-                                width: 12,
-                              ),
-                              Expanded(
-                                  child: TextFormField(
-                                controller: idcontroller,
-                                decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(8, 4, 4, 4),
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                    )),
-                              )),
-                            ],
-                          ),
-                        ),
-                        Container(
                           padding: EdgeInsets.only(top: 16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -271,7 +240,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         style: textgetter.bodyMedium
                                             ?.copyWith(color: Colors.white)),
                                     TextSpan(
-                                      text: "隱私政策",
+                                      text: "隱私權政策",
                                       style: textgetter.bodyMedium?.copyWith(
                                           color: Colors.white,
                                           decoration: TextDecoration.underline,

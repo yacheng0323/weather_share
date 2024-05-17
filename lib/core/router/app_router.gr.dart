@@ -8,65 +8,81 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i5;
-import 'package:weather_share/feature/home_page.dart' as _i1;
+import 'package:auto_route/auto_route.dart' as _i7;
+import 'package:weather_share/feature/account/account_page.dart' as _i1;
+import 'package:weather_share/feature/account/user_profile/presentation/user_profile.dart'
+    as _i6;
 import 'package:weather_share/feature/login/presentation/login_page.dart'
     as _i2;
-import 'package:weather_share/feature/register/presentation/register_page.dart'
+import 'package:weather_share/feature/publish/presentation/publish_page.dart'
     as _i3;
-import 'package:weather_share/feature/sharehome/presentation/share_home_page.dart'
+import 'package:weather_share/feature/register/presentation/register_page.dart'
     as _i4;
+import 'package:weather_share/feature/sharehome/presentation/share_home_page.dart'
+    as _i5;
 
-abstract class $AppRouter extends _i5.RootStackRouter {
+abstract class $AppRouter extends _i7.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i5.PageFactory> pagesMap = {
-    HomePageRoute.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+  final Map<String, _i7.PageFactory> pagesMap = {
+    AccountPageRoute.name: (routeData) {
+      return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i1.HomePage(),
+        child: const _i1.AccountPage(),
       );
     },
     LoginPageRoute.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+      return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i2.LoginPage(),
       );
     },
-    RegisterPageRoute.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+    PublishPageRoute.name: (routeData) {
+      return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.RegisterPage(),
+        child: const _i3.PublishPage(),
+      );
+    },
+    RegisterPageRoute.name: (routeData) {
+      return _i7.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i4.RegisterPage(),
       );
     },
     ShareHomePageRoute.name: (routeData) {
-      return _i5.AutoRoutePage<dynamic>(
+      return _i7.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.ShareHomePage(),
+        child: const _i5.ShareHomePage(),
+      );
+    },
+    UserProfileRoute.name: (routeData) {
+      return _i7.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i6.UserProfile(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.HomePage]
-class HomePageRoute extends _i5.PageRouteInfo<void> {
-  const HomePageRoute({List<_i5.PageRouteInfo>? children})
+/// [_i1.AccountPage]
+class AccountPageRoute extends _i7.PageRouteInfo<void> {
+  const AccountPageRoute({List<_i7.PageRouteInfo>? children})
       : super(
-          HomePageRoute.name,
+          AccountPageRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'HomePageRoute';
+  static const String name = 'AccountPageRoute';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i2.LoginPage]
-class LoginPageRoute extends _i5.PageRouteInfo<void> {
-  const LoginPageRoute({List<_i5.PageRouteInfo>? children})
+class LoginPageRoute extends _i7.PageRouteInfo<void> {
+  const LoginPageRoute({List<_i7.PageRouteInfo>? children})
       : super(
           LoginPageRoute.name,
           initialChildren: children,
@@ -74,13 +90,27 @@ class LoginPageRoute extends _i5.PageRouteInfo<void> {
 
   static const String name = 'LoginPageRoute';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i3.RegisterPage]
-class RegisterPageRoute extends _i5.PageRouteInfo<void> {
-  const RegisterPageRoute({List<_i5.PageRouteInfo>? children})
+/// [_i3.PublishPage]
+class PublishPageRoute extends _i7.PageRouteInfo<void> {
+  const PublishPageRoute({List<_i7.PageRouteInfo>? children})
+      : super(
+          PublishPageRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'PublishPageRoute';
+
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i4.RegisterPage]
+class RegisterPageRoute extends _i7.PageRouteInfo<void> {
+  const RegisterPageRoute({List<_i7.PageRouteInfo>? children})
       : super(
           RegisterPageRoute.name,
           initialChildren: children,
@@ -88,13 +118,13 @@ class RegisterPageRoute extends _i5.PageRouteInfo<void> {
 
   static const String name = 'RegisterPageRoute';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i4.ShareHomePage]
-class ShareHomePageRoute extends _i5.PageRouteInfo<void> {
-  const ShareHomePageRoute({List<_i5.PageRouteInfo>? children})
+/// [_i5.ShareHomePage]
+class ShareHomePageRoute extends _i7.PageRouteInfo<void> {
+  const ShareHomePageRoute({List<_i7.PageRouteInfo>? children})
       : super(
           ShareHomePageRoute.name,
           initialChildren: children,
@@ -102,5 +132,19 @@ class ShareHomePageRoute extends _i5.PageRouteInfo<void> {
 
   static const String name = 'ShareHomePageRoute';
 
-  static const _i5.PageInfo<void> page = _i5.PageInfo<void>(name);
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i6.UserProfile]
+class UserProfileRoute extends _i7.PageRouteInfo<void> {
+  const UserProfileRoute({List<_i7.PageRouteInfo>? children})
+      : super(
+          UserProfileRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'UserProfileRoute';
+
+  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
 }

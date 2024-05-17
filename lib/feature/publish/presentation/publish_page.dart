@@ -17,6 +17,7 @@ class _PublishPageState extends State<PublishPage> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           "新增貼文",
           style: textgetter.titleLarge

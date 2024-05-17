@@ -23,6 +23,7 @@ dependencies:
   path_provider: ^2.1.3 
   styled_text: ^8.1.0
   path: any
+  url_launcher: ^6.2.6
 
 dev_dependencies:
   flutter_test:

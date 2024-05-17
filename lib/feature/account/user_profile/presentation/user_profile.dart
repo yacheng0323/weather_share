@@ -1,37 +1,24 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:weather_share/core/router/app_router.gr.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
 
 @RoutePage()
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class UserProfile extends StatefulWidget {
+  const UserProfile({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<UserProfile> createState() => _UserProfileState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final formKey = GlobalKey<FormState>();
-  final focusNode = FocusNode();
-
-  final TextEditingController loginTextEditingController =
-      TextEditingController();
-  final TextEditingController passwordTextEditingController =
-      TextEditingController();
+class _UserProfileState extends State<UserProfile> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController nicknameController = TextEditingController();
 
   @override
   void initState() {
+    emailController.text = "?????";
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    loginTextEditingController.dispose();
-    passwordTextEditingController.dispose();
-    super.dispose();
   }
 
   @override
@@ -40,16 +27,21 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       appBar: AppBar(
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        toolbarHeight: 0,
+        title: Text(
+          "修改會員資料",
+          style: textgetter.titleLarge
+              ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+        ),
+        backgroundColor: Color(0xff76B2F9),
       ),
       body: Stack(
-        alignment: Alignment.topCenter,
+        alignment: Alignment.center,
         children: [
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
+              color: Color(0xffE6E6E6),
               image: DecorationImage(
                 image: AssetImage("image/background.png"),
                 fit: BoxFit.cover,
@@ -68,34 +60,47 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         Container(
                           margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                          width: 150,
-                          height: 150,
+                          width: 100,
+                          height: 100,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(75),
-                              border: Border.all(
-                                  color: Color(0xff62B4ff), width: 4)),
-                          child: ClipRRect(
-                              child: Image.asset(
-                            "image/how's_the_weather.png",
-                          )),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(50),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "image/avatar.png",
+                              ),
+                              Padding(padding: EdgeInsets.all(2)),
+                              Text(
+                                "選擇圖片",
+                                style: textgetter.bodyMedium
+                                    ?.copyWith(color: Color(0xffAAAAAA)),
+                              ),
+                            ],
+                          ),
                         ),
                         Container(
                           padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
-                          margin: EdgeInsets.only(top: 60),
+                          margin: EdgeInsets.only(top: 100),
                           height: 40,
                           child: Row(
                             children: [
-                              Text("帳號",
-                                  style: textgetter.bodyMedium
-                                      ?.copyWith(color: Colors.white)),
+                              SizedBox(
+                                width: 50,
+                                child: Text("Email",
+                                    style: textgetter.bodyMedium
+                                        ?.copyWith(color: Colors.white)),
+                              ),
                               SizedBox(
                                 width: 12,
                               ),
                               Expanded(
                                   child: TextFormField(
-                                controller: loginTextEditingController,
+                                enabled: false,
+                                controller: emailController,
                                 decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -114,15 +119,18 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40,
                           child: Row(
                             children: [
-                              Text("密碼",
-                                  style: textgetter.bodyMedium
-                                      ?.copyWith(color: Colors.white)),
+                              SizedBox(
+                                width: 50,
+                                child: Text("暱稱",
+                                    style: textgetter.bodyMedium
+                                        ?.copyWith(color: Colors.white)),
+                              ),
                               SizedBox(
                                 width: 12,
                               ),
                               Expanded(
                                   child: TextFormField(
-                                controller: passwordTextEditingController,
+                                controller: nicknameController,
                                 decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.white,
@@ -136,22 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         Container(
-                          padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
-                          alignment: Alignment.centerRight,
-                          margin: EdgeInsets.only(top: 4),
-                          child: TextButton(
-                            style:
-                                TextButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: () {},
-                            child: Text(
-                              "忘記密碼",
-                              style: textgetter.bodyMedium
-                                  ?.copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 64),
+                          margin: EdgeInsets.only(top: 100),
                           padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
                           width: MediaQuery.of(context).size.width,
                           child: ElevatedButton(
@@ -161,32 +154,11 @@ class _LoginPageState extends State<LoginPage> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(4))),
                             onPressed: () {
-                              AutoRouter.of(context)
-                                  .replace(const ShareHomePageRoute());
+                              // AutoRouter.of(context)
+                              //     .replace(const HomePageRoute());
                             },
                             child: Text(
-                              "登入",
-                              style: textgetter.bodyMedium
-                                  ?.copyWith(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 4),
-                          padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
-                          width: MediaQuery.of(context).size.width,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Color(0xff448BF7),
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4))),
-                            onPressed: () {
-                              AutoRouter.of(context)
-                                  .push(const RegisterPageRoute());
-                            },
-                            child: Text(
-                              "註冊",
+                              "送出",
                               style: textgetter.bodyMedium
                                   ?.copyWith(color: Colors.white),
                             ),

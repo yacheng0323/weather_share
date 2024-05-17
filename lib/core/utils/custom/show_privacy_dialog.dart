@@ -21,7 +21,7 @@ class ShowPrivacyDialog {
           elevation: 0,
           title: Center(
             child: Text(
-              "隱私政策",
+              "隱私權政策",
               style: textgetter.headlineMedium?.copyWith(
                   color: Color(0xff5A5A5A),
                   decoration: TextDecoration.underline,
