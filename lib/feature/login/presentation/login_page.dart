@@ -1,9 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_share/core/router/app_router.gr.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
@@ -20,7 +17,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
-  final focusNode = FocusNode();
+  final loginFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
 
   final TextEditingController loginController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -34,6 +32,9 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     loginController.dispose();
     passwordController.dispose();
+    loginFocusNode.dispose();
+    passwordFocusNode.dispose();
+
     super.dispose();
   }
 
@@ -125,6 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                                             LengthLimitingTextInputFormatter(
                                                 100)
                                           ],
+                                          focusNode: loginFocusNode,
+                                          textInputAction: TextInputAction.next,
                                           decoration: InputDecoration(
                                               filled: true,
                                               fillColor: Colors.white,
@@ -171,6 +174,11 @@ class _LoginPageState extends State<LoginPage> {
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(50)
                                           ],
+                                          onFieldSubmitted: (value) {
+                                            FocusScope.of(context).requestFocus(
+                                                passwordFocusNode);
+                                          },
+                                          textInputAction: TextInputAction.done,
                                           decoration: InputDecoration(
                                               filled: true,
                                               fillColor: Colors.white,
