@@ -64,9 +64,7 @@ class _UserProfileState extends State<UserProfile> {
                           height: 100,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
+                              color: Colors.white, shape: BoxShape.circle),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
