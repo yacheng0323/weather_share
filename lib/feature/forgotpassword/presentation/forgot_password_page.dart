@@ -1,29 +1,25 @@
-import 'package:auto_route/auto_route.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
 import 'package:weather_share/core/utils/custom/show_snack.bar.dart';
-import 'package:weather_share/feature/account/user_profile/domain/user_profile_view_model.dart';
+import 'package:weather_share/feature/forgotpassword/domain/forgot_password_view_model.dart';
 
 @RoutePage()
-class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+class ForgotPasswordPage extends StatefulWidget {
+  const ForgotPasswordPage({super.key});
 
   @override
-  State<UserProfile> createState() => _UserProfileState();
+  State<ForgotPasswordPage> createState() => _ForgotPasswordPageState();
 }
 
-class _UserProfileState extends State<UserProfile> {
+class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final formKey = GlobalKey<FormState>();
-  final TextEditingController nicknameController = TextEditingController();
-
-  @override
-  void dispose() {
-    nicknameController.dispose();
-    super.dispose();
-  }
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,25 +27,18 @@ class _UserProfileState extends State<UserProfile> {
 
     return ChangeNotifierProvider(
       create: (context) {
-        UserProfileViewModel userProfileViewModel = UserProfileViewModel();
+        ForgotPasswordViewModel forgotPasswordViewModel =
+            ForgotPasswordViewModel();
 
-        // userProfileViewModel.getEmail();
-        // emailController.value =
-        //     TextEditingValue(text: userProfileViewModel.email ?? "");
-        return userProfileViewModel;
+        return forgotPasswordViewModel;
       },
       builder: (context, child) {
-        return Consumer<UserProfileViewModel>(
+        return Consumer<ForgotPasswordViewModel>(
           builder: (context, provider, child) {
             return Scaffold(
               appBar: AppBar(
-                iconTheme: const IconThemeData(color: Colors.white),
-                title: Text(
-                  "修改會員資料",
-                  style: textgetter.titleLarge?.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.w700),
-                ),
-                backgroundColor: const Color(0xff76B2F9),
+                systemOverlayStyle: SystemUiOverlayStyle.dark,
+                toolbarHeight: 0,
               ),
               body: Stack(
                 alignment: Alignment.center,
@@ -80,40 +69,31 @@ class _UserProfileState extends State<UserProfile> {
                               child: Column(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(0, 90, 0, 0),
-                                    width: 100,
-                                    height: 100,
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                                    width: 150,
+                                    height: 150,
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                         color: Colors.white,
-                                        shape: BoxShape.circle),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Image.asset(
-                                          "image/avatar.png",
-                                        ),
-                                        Padding(padding: EdgeInsets.all(2)),
-                                        Text(
-                                          "選擇圖片",
-                                          style: textgetter.bodyMedium
-                                              ?.copyWith(
-                                                  color: Color(0xffAAAAAA)),
-                                        ),
-                                      ],
-                                    ),
+                                        borderRadius: BorderRadius.circular(75),
+                                        border: Border.all(
+                                            color: const Color(0xff62B4ff),
+                                            width: 4)),
+                                    child: ClipRRect(
+                                        child: Image.asset(
+                                      "image/how's_the_weather.png",
+                                    )),
                                   ),
                                   Container(
                                     padding:
-                                        const EdgeInsets.fromLTRB(45, 0, 45, 0),
-                                    margin: const EdgeInsets.only(top: 50),
-                                    // height: 40,
+                                        const EdgeInsets.fromLTRB(24, 0, 24, 0),
+                                    margin: const EdgeInsets.only(top: 100),
                                     child: Row(
                                       children: [
                                         SizedBox(
-                                          width: 30,
-                                          child: Text("暱稱",
+                                          width: 50,
+                                          child: Text("Email",
                                               style: textgetter.bodyMedium
                                                   ?.copyWith(
                                                       color: Colors.white)),
@@ -123,10 +103,11 @@ class _UserProfileState extends State<UserProfile> {
                                         ),
                                         Expanded(
                                             child: TextFormField(
-                                          controller: nicknameController,
                                           inputFormatters: [
-                                            LengthLimitingTextInputFormatter(80)
+                                            LengthLimitingTextInputFormatter(
+                                                100)
                                           ],
+                                          controller: emailController,
                                           decoration: InputDecoration(
                                               filled: true,
                                               fillColor: Colors.white,
@@ -139,19 +120,21 @@ class _UserProfileState extends State<UserProfile> {
                                                 borderSide: BorderSide.none,
                                               )),
                                           validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return "暱稱為必填欄位喔";
-                                            }
-                                            return null;
+                                            final bool emailValid = RegExp(
+                                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                                .hasMatch(value ?? '');
+                                            return !emailValid
+                                                ? "信箱格式錯誤"
+                                                : null;
                                           },
                                         )),
                                       ],
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(top: 170),
-                                    padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
+                                    margin: const EdgeInsets.only(top: 100),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(45, 0, 45, 0),
                                     width: MediaQuery.of(context).size.width,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
@@ -163,19 +146,24 @@ class _UserProfileState extends State<UserProfile> {
                                       onPressed: () async {
                                         if (formKey.currentState?.validate() ==
                                             true) {
-                                          await provider.update(
-                                              nickName:
-                                                  nicknameController.text);
+                                          await provider.resetPassword(
+                                              email: emailController.text);
 
-                                          if (provider.isSuccess == true) {
+                                          if (provider.forgotPasswordResult
+                                                  ?.isSuccess ==
+                                              true) {
                                             ShowSnackBarHelper.successSnackBar(
                                                     context: context)
-                                                .showSnackbar("修改成功！");
+                                                .showSnackbar(
+                                                    "已向您輸入的電子郵件地址發送驗證信件");
                                             Navigator.pop(context);
                                           } else {
                                             ShowSnackBarHelper.errorSnackBar(
                                                     context: context)
-                                                .showSnackbar("修改失敗！");
+                                                .showSnackbar(provider
+                                                        .forgotPasswordResult
+                                                        ?.errorMessage ??
+                                                    "");
                                           }
                                         }
                                         // AutoRouter.of(context)

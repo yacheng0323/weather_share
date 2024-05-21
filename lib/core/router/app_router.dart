@@ -3,6 +3,7 @@ import 'package:auto_route/auto_route.dart';
 
 import 'app_router.gr.dart';
 
+// dart run build_runner build --delete-conflicting-outputs
 @AutoRouterConfig(replaceInRouteName: "Page.Route")
 class AppRouter extends $AppRouter {
   @override
@@ -12,5 +13,6 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: UserProfileRoute.page),
         AutoRoute(page: ShareHomePageRoute.page),
         AutoRoute(page: PublishPageRoute.page),
+        AutoRoute(page: ForgotPasswordPageRoute.page),
       ];
 }

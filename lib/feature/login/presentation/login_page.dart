@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   final loginFocusNode = FocusNode();
   final passwordFocusNode = FocusNode();
 
-  final TextEditingController loginController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
@@ -30,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    loginController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     loginFocusNode.dispose();
     passwordFocusNode.dispose();
@@ -44,17 +46,17 @@ class _LoginPageState extends State<LoginPage> {
 
     return ChangeNotifierProvider(
       create: (context) {
-        final loginViewModel = LoginViewModel();
+        LoginViewModel loginViewModel = LoginViewModel();
 
-        loginViewModel.checkUserAuthState();
+        // loginViewModel.checkUserAuthState();
         return loginViewModel;
       },
       builder: (context, child) {
         return Consumer<LoginViewModel>(
           builder: (context, provider, child) {
-            if (provider.user != null) {
-              AutoRouter.of(context).replace(const ShareHomePageRoute());
-            }
+            // if (provider.user != null) {
+            //   AutoRouter.of(context).replace(const ShareHomePageRoute());
+            // }
             return Scaffold(
               appBar: AppBar(
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -87,21 +89,36 @@ class _LoginPageState extends State<LoginPage> {
                             child: IntrinsicHeight(
                               child: Column(
                                 children: [
-                                  Container(
-                                    margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-                                    width: 150,
-                                    height: 150,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(75),
-                                        border: Border.all(
-                                            color: Color(0xff62B4ff),
-                                            width: 4)),
-                                    child: ClipRRect(
-                                        child: Image.asset(
-                                      "image/how's_the_weather.png",
-                                    )),
+                                  GestureDetector(
+                                    onLongPress: () {
+                                      if (kDebugMode) {
+                                        log("debug mode");
+                                        emailController.value =
+                                            const TextEditingValue(
+                                                text: "ppp222@gmail.com");
+
+                                        passwordController.value =
+                                            const TextEditingValue(
+                                                text: "pp111111");
+                                      }
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                                      width: 150,
+                                      height: 150,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(75),
+                                          border: Border.all(
+                                              color: Color(0xff62B4ff),
+                                              width: 4)),
+                                      child: ClipRRect(
+                                          child: Image.asset(
+                                        "image/how's_the_weather.png",
+                                      )),
+                                    ),
                                   ),
                                   Container(
                                     padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
@@ -112,16 +129,19 @@ class _LoginPageState extends State<LoginPage> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        Text("帳號",
-                                            style: textgetter.bodyMedium
-                                                ?.copyWith(
-                                                    color: Colors.white)),
+                                        SizedBox(
+                                          width: 40,
+                                          child: Text("Email",
+                                              style: textgetter.bodyMedium
+                                                  ?.copyWith(
+                                                      color: Colors.white)),
+                                        ),
                                         SizedBox(
                                           width: 12,
                                         ),
                                         Expanded(
                                             child: TextFormField(
-                                          controller: loginController,
+                                          controller: emailController,
                                           inputFormatters: [
                                             LengthLimitingTextInputFormatter(
                                                 100)
@@ -156,13 +176,15 @@ class _LoginPageState extends State<LoginPage> {
                                   Container(
                                     padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
                                     margin: EdgeInsets.only(top: 8),
-                                    // height: 40,
                                     child: Row(
                                       children: [
-                                        Text("密碼",
-                                            style: textgetter.bodyMedium
-                                                ?.copyWith(
-                                                    color: Colors.white)),
+                                        SizedBox(
+                                          width: 40,
+                                          child: Text("密碼",
+                                              style: textgetter.bodyMedium
+                                                  ?.copyWith(
+                                                      color: Colors.white)),
+                                        ),
                                         SizedBox(
                                           width: 12,
                                         ),
@@ -233,7 +255,10 @@ class _LoginPageState extends State<LoginPage> {
                                     child: TextButton(
                                       style: TextButton.styleFrom(
                                           padding: EdgeInsets.zero),
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        AutoRouter.of(context)
+                                            .push(ForgotPasswordPageRoute());
+                                      },
                                       child: Text(
                                         "忘記密碼",
                                         style: textgetter.bodyMedium
@@ -256,7 +281,7 @@ class _LoginPageState extends State<LoginPage> {
                                         if (formKey.currentState?.validate() ==
                                             true) {
                                           await provider.signIn(
-                                              email: loginController.text,
+                                              email: emailController.text,
                                               password:
                                                   passwordController.text);
 
