@@ -10,6 +10,23 @@ final authServiceProvider = AuthServices();
 class CloudStorage extends ChangeNotifier {
   final FirebaseFirestore _storage = FirebaseFirestore.instance;
 
+  Future<Map<String, dynamic>> getUserAttributes() async {
+    try {
+      User? user = await authServiceProvider.getUser();
+      String uid = user != null ? user.uid : "";
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await _storage.collection("users").doc(uid).get();
+
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data()!;
+        return data;
+      }
+      return {};
+    } catch (err, s) {
+      return {};
+    }
+  }
+
   Future<void> saveUserData({
     required String uid,
     required String email,
@@ -27,11 +44,13 @@ class CloudStorage extends ChangeNotifier {
   }
 
   Future<bool> updateUserData({required String nickName}) async {
-    User? user = await authServiceProvider.getUser();
-    String uid = user != null ? user.uid : "";
-    Map<String, dynamic> userAttributes = {"nickName": nickName};
     try {
+      User? user = await authServiceProvider.getUser();
+      String uid = user != null ? user.uid : "";
+      Map<String, dynamic> userAttributes = {"nickName": nickName};
+      // 使用此方法，新增沒有的屬性
       await _storage.collection("users").doc(uid).update(userAttributes);
+
       return true;
     } catch (err, s) {
       log("$err");

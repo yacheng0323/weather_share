@@ -128,8 +128,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 value: provider
                                                     .isPrivacyPolicyAccepted,
                                                 onChanged: (value) {
-                                                  provider
-                                                      .onPrivacyPolicyCheckboxChanged();
+                                                  provider.toggleVisibility(
+                                                      RegisterVisibilityType
+                                                          .isPrivacyPolicyAccepted);
                                                 }),
                                           ),
                                         ),
@@ -310,7 +311,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 fillColor: Colors.white,
                 suffixIcon: IconButton(
                   onPressed: () {
-                    provider.modifyPasswordVisible();
+                    provider.toggleVisibility(
+                        RegisterVisibilityType.passwordVisible);
                   },
                   icon: Icon(
                     provider.passwordVisible!
@@ -370,7 +372,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 fillColor: Colors.white,
                 suffixIcon: IconButton(
                   onPressed: () {
-                    provider.modifyConfirmPasswordVisible();
+                    provider.toggleVisibility(
+                        RegisterVisibilityType.confirmPasswordVisible);
                   },
                   icon: Icon(
                     provider.confirmPasswordVisible!

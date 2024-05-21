@@ -4,6 +4,7 @@ import 'package:weather_share/entities/remote/forgot_password_result.dart';
 import 'package:weather_share/entities/remote/register_result.dart';
 import 'package:weather_share/entities/remote/signIn_result.dart';
 import 'package:weather_share/entities/remote/signout_result.dart';
+import 'package:weather_share/entities/remote/validate_password_result.dart';
 
 class AuthServices extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -98,6 +99,62 @@ class AuthServices extends ChangeNotifier {
               isSuccess: false, errorMessage: "發生未知錯誤。");
       }
     }
+  }
+
+  //* 驗證舊密碼
+  Future<ValidatePasswordResult> validateOldPassword(
+      {required String password}) async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      AuthCredential authCredential =
+          EmailAuthProvider.credential(email: user.email!, password: password);
+
+      try {
+        await user.reauthenticateWithCredential(authCredential);
+        return ValidatePasswordResult(isValidate: true);
+      } on FirebaseAuthException catch (e) {
+        switch (e.code) {
+          case "user-mismatch":
+            return ValidatePasswordResult(
+                isValidate: false, errorMessage: "提供的憑證與當前用戶不匹配。");
+
+          case "user-not-found":
+            return ValidatePasswordResult(
+                isValidate: false, errorMessage: "找不到與提供憑證相對應的用戶。");
+
+          case "invalid-credential":
+            return ValidatePasswordResult(
+                isValidate: false,
+                errorMessage:
+                    "提供的憑證無效。這可能是由於憑證過期或使用了無效的憑證。請檢查您的提供者憑證文檔，確保您傳入了正確的參數。");
+          case "invalid-email":
+            return ValidatePasswordResult(
+                isValidate: false, errorMessage: "提供的電子郵件地址無效。");
+          case "wrong-password":
+            return ValidatePasswordResult(
+                isValidate: false,
+                errorMessage: "提供的密碼不正確，或與該電子郵件地址關聯的用戶沒有設置密碼。");
+          case "invalid-verification-code":
+            return ValidatePasswordResult(
+                isValidate: false, errorMessage: "提供的驗證碼無效。請重新輸入正確的驗證碼。");
+          case "invalid-verification-id":
+            return ValidatePasswordResult(
+                isValidate: false, errorMessage: "提供的驗證ID無效。請檢查並重新輸入正確的驗證ID。");
+          default:
+            return ValidatePasswordResult(
+                isValidate: false, errorMessage: "發生未知錯誤。");
+        }
+      }
+    }
+    return ValidatePasswordResult(isValidate: false, errorMessage: "發生未知錯誤。");
+  }
+
+  Future<void> changePassword() async {
+    try {
+      // _auth.currentUser.
+      // _auth.currentUser?.updatePassword(newPassword)
+    } catch (e) {}
   }
 
   //* 登出

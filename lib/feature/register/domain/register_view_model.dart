@@ -22,18 +22,19 @@ class RegisterViewModel extends ChangeNotifier {
 
   bool? get isPrivacyPolicyAccepted => _isPrivacyPolicyAccepted;
 
-  void modifyPasswordVisible() {
-    _passwordVisible = !_passwordVisible;
-    notifyListeners();
-  }
+  void toggleVisibility(RegisterVisibilityType type) {
+    switch (type) {
+      case RegisterVisibilityType.passwordVisible:
+        _passwordVisible = !_passwordVisible;
+        break;
+      case RegisterVisibilityType.confirmPasswordVisible:
+        _confirmPasswordVisible = !_confirmPasswordVisible;
+        break;
+      case RegisterVisibilityType.isPrivacyPolicyAccepted:
+        _isPrivacyPolicyAccepted = !_isPrivacyPolicyAccepted;
 
-  void modifyConfirmPasswordVisible() {
-    _confirmPasswordVisible = !_confirmPasswordVisible;
-    notifyListeners();
-  }
-
-  void onPrivacyPolicyCheckboxChanged() {
-    _isPrivacyPolicyAccepted = !_isPrivacyPolicyAccepted;
+        break;
+    }
     notifyListeners();
   }
 
@@ -54,4 +55,10 @@ class RegisterViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+}
+
+enum RegisterVisibilityType {
+  passwordVisible,
+  confirmPasswordVisible,
+  isPrivacyPolicyAccepted,
 }

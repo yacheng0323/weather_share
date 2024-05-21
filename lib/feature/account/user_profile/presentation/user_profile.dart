@@ -33,9 +33,6 @@ class _UserProfileState extends State<UserProfile> {
       create: (context) {
         UserProfileViewModel userProfileViewModel = UserProfileViewModel();
 
-        // userProfileViewModel.getEmail();
-        // emailController.value =
-        //     TextEditingValue(text: userProfileViewModel.email ?? "");
         return userProfileViewModel;
       },
       builder: (context, child) {
@@ -80,11 +77,12 @@ class _UserProfileState extends State<UserProfile> {
                               child: Column(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(0, 90, 0, 0),
+                                    margin:
+                                        const EdgeInsets.fromLTRB(0, 90, 0, 0),
                                     width: 100,
                                     height: 100,
                                     alignment: Alignment.center,
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         color: Colors.white,
                                         shape: BoxShape.circle),
                                     child: Column(
@@ -94,12 +92,14 @@ class _UserProfileState extends State<UserProfile> {
                                         Image.asset(
                                           "image/avatar.png",
                                         ),
-                                        Padding(padding: EdgeInsets.all(2)),
+                                        const Padding(
+                                            padding: EdgeInsets.all(2)),
                                         Text(
                                           "選擇圖片",
                                           style: textgetter.bodyMedium
                                               ?.copyWith(
-                                                  color: Color(0xffAAAAAA)),
+                                                  color:
+                                                      const Color(0xffAAAAAA)),
                                         ),
                                       ],
                                     ),
@@ -133,9 +133,9 @@ class _UserProfileState extends State<UserProfile> {
                                               errorStyle: textgetter.bodyMedium
                                                   ?.copyWith(color: Colors.red),
                                               contentPadding:
-                                                  EdgeInsets.fromLTRB(
+                                                  const EdgeInsets.fromLTRB(
                                                       8, 4, 4, 4),
-                                              border: OutlineInputBorder(
+                                              border: const OutlineInputBorder(
                                                 borderSide: BorderSide.none,
                                               )),
                                           validator: (value) {
@@ -150,12 +150,14 @@ class _UserProfileState extends State<UserProfile> {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(top: 170),
-                                    padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
+                                    margin: const EdgeInsets.only(top: 170),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(45, 0, 45, 0),
                                     width: MediaQuery.of(context).size.width,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color(0xff448BF7),
+                                          backgroundColor:
+                                              const Color(0xff448BF7),
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -178,8 +180,6 @@ class _UserProfileState extends State<UserProfile> {
                                                 .showSnackbar("修改失敗！");
                                           }
                                         }
-                                        // AutoRouter.of(context)
-                                        //     .replace(const HomePageRoute());
                                       },
                                       child: Text(
                                         "送出",

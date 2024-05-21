@@ -14,5 +14,6 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: ShareHomePageRoute.page),
         AutoRoute(page: PublishPageRoute.page),
         AutoRoute(page: ForgotPasswordPageRoute.page),
+        AutoRoute(page: ChangePasswordPageRoute.page),
       ];
 }
