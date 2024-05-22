@@ -4,10 +4,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
+import 'package:weather_share/core/utils/custom/show_snack.bar.dart';
+import 'package:weather_share/feature/publish/data/country_model.dart';
+import 'package:weather_share/feature/publish/data/weather_model.dart';
 import 'package:weather_share/feature/publish/domain/publish_view_model.dart';
 
 @RoutePage()
@@ -21,32 +22,9 @@ class PublishPage extends StatefulWidget {
 class _PublishPageState extends State<PublishPage> {
   final FocusNode focusNode = FocusNode();
   final TextEditingController contentController = TextEditingController();
-  // List<Weather> weatherlist = [
-  //   Weather(icon: Symbols.sunny, text: "晴天"),
-  //   Weather(icon: Symbols.rainy, text: "雨天"),
-  //   Weather(icon: Symbols.cloud, text: "多雲")
-  // ];
-  // Weather? dropdownValue;
-  final List<String> items = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-  ];
-  String? selectedValue;
-
-  final List<String> items2 = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-  ];
-  String? selectedValue2;
 
   @override
   void initState() {
-    // dropdownValue = weatherlist.first;
-
     super.initState();
   }
 
@@ -184,78 +162,105 @@ class _PublishPageState extends State<PublishPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("天氣"),
+                            Text(
+                              "天氣",
+                              style: textgetter.bodyMedium
+                                  ?.copyWith(color: Color(0xff2E2E2E)),
+                            ),
                             DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
+                              child: DropdownButton2<WeatherModel>(
                                 isExpanded: true,
-                                hint: Text(
-                                  'Select Item',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                ),
-                                items: items
-                                    .map((String item) =>
-                                        DropdownMenuItem<String>(
-                                          value: item,
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ))
+                                hint: Text("請選擇天氣",
+                                    style: textgetter.bodyMedium
+                                        ?.copyWith(color: Color(0xff2E2E2E))),
+                                items: provider.weatherList
+                                    .map(
+                                      (item) => DropdownMenuItem<WeatherModel>(
+                                        value: item,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Image.asset(item.icon),
+                                            Padding(padding: EdgeInsets.all(2)),
+                                            Text(
+                                              item.text,
+                                              style: textgetter.bodyMedium
+                                                  ?.copyWith(
+                                                      color: Color(0xff2E2E2E)),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    )
                                     .toList(),
-                                value: selectedValue,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    selectedValue = value;
-                                  });
+                                value: provider.weather,
+                                onChanged: (value) {
+                                  provider.selectWeather(weather: value!);
                                 },
-                                buttonStyleData: const ButtonStyleData(
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  height: 40,
-                                  width: 140,
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Color(0xffD9D9D9),
+                                      ),
+                                      borderRadius: BorderRadius.circular(4)),
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  height: 35,
+                                  width: 120,
                                 ),
                                 menuItemStyleData: const MenuItemStyleData(
                                   height: 40,
                                 ),
                               ),
                             ),
-                            Text("國家"),
+                            Text(
+                              "國家",
+                              style: textgetter.bodyMedium
+                                  ?.copyWith(color: Color(0xff2E2E2E)),
+                            ),
                             DropdownButtonHideUnderline(
-                              child: DropdownButton2<String>(
+                              child: DropdownButton2<CountryModel>(
                                 isExpanded: true,
-                                hint: Text(
-                                  'Select Item',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                ),
-                                items: items2
-                                    .map((String item) =>
-                                        DropdownMenuItem<String>(
+                                hint: Text('請選擇國家',
+                                    style: textgetter.bodyMedium
+                                        ?.copyWith(color: Color(0xff2E2E2E))),
+                                items: provider.countryList
+                                    .map((item) =>
+                                        DropdownMenuItem<CountryModel>(
                                           value: item,
-                                          child: Text(
-                                            item,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Image.asset(item.icon),
+                                              Padding(
+                                                  padding: EdgeInsets.all(2)),
+                                              Text(
+                                                item.text,
+                                                style: textgetter.bodyMedium
+                                                    ?.copyWith(
+                                                        color:
+                                                            Color(0xff2E2E2E)),
+                                              )
+                                            ],
                                           ),
                                         ))
                                     .toList(),
-                                value: selectedValue2,
-                                onChanged: (String? value) {
-                                  setState(() {
-                                    selectedValue2 = value;
-                                  });
+                                value: provider.country,
+                                onChanged: (value) {
+                                  provider.selectCountry(country: value!);
                                 },
-                                buttonStyleData: const ButtonStyleData(
-                                  padding: EdgeInsets.symmetric(horizontal: 16),
-                                  height: 40,
-                                  width: 140,
+                                buttonStyleData: ButtonStyleData(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 1,
+                                        color: Color(0xffD9D9D9),
+                                      ),
+                                      borderRadius: BorderRadius.circular(4)),
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                  height: 35,
+                                  width: 120,
                                 ),
                                 menuItemStyleData: const MenuItemStyleData(
                                   height: 40,
@@ -276,7 +281,14 @@ class _PublishPageState extends State<PublishPage> {
                             backgroundColor: const Color(0xff448EF7),
                           ),
                           onPressed: () async {
-                            await provider.publish();
+                            provider.validateForm();
+                            if (provider.notValidateMessage!.isNotEmpty) {
+                              ShowSnackBarHelper.errorSnackBar(context: context)
+                                  .showSnackbar(
+                                      provider.notValidateMessage ?? "");
+                            } else {
+                              // await provider.publish();
+                            }
                           },
                           child: Text(
                             "發表",
@@ -295,11 +307,4 @@ class _PublishPageState extends State<PublishPage> {
       },
     );
   }
-}
-
-class Weather {
-  final IconData icon;
-  final String text;
-
-  Weather({required this.icon, required this.text});
 }

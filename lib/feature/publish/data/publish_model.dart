@@ -1,6 +1,5 @@
 class PublishModel {
-  final String postId;
-  final String authorId;
+  final String author;
   final String content;
   final int timestamp;
   final String imageURL;
@@ -8,8 +7,7 @@ class PublishModel {
   final String country;
   final List<String> likedBy;
   PublishModel(
-      {required this.postId,
-      required this.authorId,
+      {required this.author,
       required this.content,
       required this.timestamp,
       required this.imageURL,
@@ -20,7 +18,7 @@ class PublishModel {
 
   Map<String, dynamic> toMap() {
     return {
-      "authorId": authorId,
+      "author": author,
       "content": content,
       "timestamp": timestamp,
       "imageURL": imageURL,
