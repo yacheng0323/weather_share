@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:weather_share/entities/remote/change_password_result.dart';
 import 'package:weather_share/entities/remote/forgot_password_result.dart';
 import 'package:weather_share/entities/remote/register_result.dart';
 import 'package:weather_share/entities/remote/signIn_result.dart';
@@ -36,7 +37,8 @@ class AuthServices extends ChangeNotifier {
         case "invalid-credential":
           return SignInResult(isSignIn: false, errorMessage: "電子郵件地址無效或密碼錯誤。");
         default:
-          return SignInResult(isSignIn: false, errorMessage: "發生未知錯誤。");
+          return SignInResult(
+              isSignIn: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
       }
     }
   }
@@ -62,7 +64,8 @@ class AuthServices extends ChangeNotifier {
         case "weak-password":
           return RegisteredResult(isRegistered: false, errorMessage: "密碼強度不足。");
         default:
-          return RegisteredResult(isRegistered: false, errorMessage: "發生未知錯誤。");
+          return RegisteredResult(
+              isRegistered: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
       }
     }
   }
@@ -96,7 +99,7 @@ class AuthServices extends ChangeNotifier {
               isSuccess: false, errorMessage: "找不到與該電子郵件地址相對應的使用者。");
         default:
           return ForgotPasswordResult(
-              isSuccess: false, errorMessage: "發生未知錯誤。");
+              isSuccess: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
       }
     }
   }
@@ -134,7 +137,7 @@ class AuthServices extends ChangeNotifier {
           case "wrong-password":
             return ValidatePasswordResult(
                 isValidate: false,
-                errorMessage: "提供的密碼不正確，或與該電子郵件地址關聯的用戶沒有設置密碼。");
+                errorMessage: "提供的舊密碼不正確，或與該電子郵件地址關聯的用戶沒有設置密碼。");
           case "invalid-verification-code":
             return ValidatePasswordResult(
                 isValidate: false, errorMessage: "提供的驗證碼無效。請重新輸入正確的驗證碼。");
@@ -143,18 +146,32 @@ class AuthServices extends ChangeNotifier {
                 isValidate: false, errorMessage: "提供的驗證ID無效。請檢查並重新輸入正確的驗證ID。");
           default:
             return ValidatePasswordResult(
-                isValidate: false, errorMessage: "發生未知錯誤。");
+                isValidate: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
         }
       }
     }
-    return ValidatePasswordResult(isValidate: false, errorMessage: "發生未知錯誤。");
+    return ValidatePasswordResult(
+        isValidate: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
   }
 
-  Future<void> changePassword() async {
+  Future<ChangePasswordResult> changePassword(
+      {required String newPassword}) async {
     try {
-      // _auth.currentUser.
-      // _auth.currentUser?.updatePassword(newPassword)
-    } catch (e) {}
+      await _auth.currentUser?.updatePassword(newPassword);
+      return ChangePasswordResult(isChanged: true);
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "weak-password":
+          return ChangePasswordResult(
+              isChanged: false, errorMessage: "密碼強度不足，請使用更複雜的密碼。");
+        case "requires-recent-login":
+          return ChangePasswordResult(
+              isChanged: false, errorMessage: "此操作需要最近一次的登入，請重新登入並再試一次。");
+        default:
+          return ChangePasswordResult(
+              isChanged: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
+      }
+    }
   }
 
   //* 登出

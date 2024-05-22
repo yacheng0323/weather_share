@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -272,39 +273,62 @@ class _LoginPageState extends State<LoginPage> {
                                     width: MediaQuery.of(context).size.width,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
+                                          disabledBackgroundColor:
+                                              Color(0xffA9D3FC),
                                           backgroundColor: Color(0xff448BF7),
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(4))),
-                                      onPressed: () async {
-                                        if (formKey.currentState?.validate() ==
-                                            true) {
-                                          await provider.signIn(
-                                              email: emailController.text,
-                                              password:
-                                                  passwordController.text);
+                                      onPressed: provider.loadingStatus
+                                          ? null
+                                          : () async {
+                                              if (formKey.currentState
+                                                      ?.validate() ==
+                                                  true) {
+                                                await provider.signIn(
+                                                    email: emailController.text,
+                                                    password: passwordController
+                                                        .text);
 
-                                          if (provider.signInResult?.isSignIn ==
-                                              true) {
-                                            ShowSnackBarHelper.successSnackBar(
-                                                    context: context)
-                                                .showSnackbar("登入成功!");
-                                            AutoRouter.of(context).replace(
-                                                const ShareHomePageRoute());
-                                          } else {
-                                            ShowSnackBarHelper.errorSnackBar(
-                                                    context: context)
-                                                .showSnackbar(provider
-                                                    .signInResult!
-                                                    .errorMessage!);
-                                          }
-                                        }
-                                      },
-                                      child: Text(
-                                        "登入",
-                                        style: textgetter.bodyMedium
-                                            ?.copyWith(color: Colors.white),
+                                                if (provider.signInResult
+                                                        ?.isSignIn ==
+                                                    true) {
+                                                  ShowSnackBarHelper
+                                                          .successSnackBar(
+                                                              context: context)
+                                                      .showSnackbar("登入成功!");
+                                                  AutoRouter.of(context).replace(
+                                                      const ShareHomePageRoute());
+                                                } else {
+                                                  ShowSnackBarHelper
+                                                          .errorSnackBar(
+                                                              context: context)
+                                                      .showSnackbar(provider
+                                                          .signInResult!
+                                                          .errorMessage!);
+                                                }
+                                              }
+                                            },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "登入",
+                                            style: textgetter.bodyMedium
+                                                ?.copyWith(color: Colors.white),
+                                          ),
+                                          provider.loadingStatus
+                                              ? Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      8, 0, 0, 0),
+                                                  child:
+                                                      CupertinoActivityIndicator(
+                                                    color: Colors.white,
+                                                  ))
+                                              : SizedBox.shrink(),
+                                        ],
                                       ),
                                     ),
                                   ),

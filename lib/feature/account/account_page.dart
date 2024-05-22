@@ -82,6 +82,8 @@ class _AccountPageState extends State<AccountPage> {
                         leading: const Icon(Icons.lock_outline),
                         onTap: () {
                           Navigator.pop(context);
+                          AutoRouter.of(context)
+                              .push(const ChangePasswordPageRoute());
                         },
                         title: Text(
                           "修改密碼",

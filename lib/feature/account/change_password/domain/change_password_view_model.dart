@@ -1,6 +1,15 @@
 import 'package:flutter/foundation.dart';
+import 'package:weather_share/core/service/auth_service.dart';
+import 'package:weather_share/entities/remote/change_password_result.dart';
+import 'package:weather_share/entities/remote/validate_password_result.dart';
+
+final authServiceProvider = AuthServices();
 
 class ChangePasswordViewModel extends ChangeNotifier {
+  ValidatePasswordResult? validatePasswordResult;
+
+  ChangePasswordResult? changePasswordResult;
+
   bool _oldPasswordVisible = true;
 
   bool? get oldPasswordVisible => _oldPasswordVisible;
@@ -25,6 +34,18 @@ class ChangePasswordViewModel extends ChangeNotifier {
         _confirmPasswordVisible = !_confirmPasswordVisible;
         break;
     }
+    notifyListeners();
+  }
+
+  Future<void> validatePassword({required String password}) async {
+    validatePasswordResult =
+        await authServiceProvider.validateOldPassword(password: password);
+    notifyListeners();
+  }
+
+  Future<void> changePassword({required String newPassword}) async {
+    changePasswordResult =
+        await authServiceProvider.changePassword(newPassword: newPassword);
     notifyListeners();
   }
 }

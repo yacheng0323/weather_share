@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_share/core/service/cloud_storage.dart';
+import 'package:weather_share/entities/remote/get_attributes_result.dart';
 
 final cloudStorageProvider = CloudStorage();
 
@@ -13,11 +14,17 @@ class AccountViewModel extends ChangeNotifier {
   String? get nickName => _nickName;
 
   Future<void> init() async {
-    Map<String, dynamic> userAttributes =
+    GetAttributesResult<Map<String, dynamic>> result =
         await cloudStorageProvider.getUserAttributes();
 
-    _email = userAttributes["email"] ?? "";
-    _nickName = userAttributes["nickName"] ?? "";
+    if (result.isSuccess) {
+      Map<String, dynamic> data = result.data!;
+      _email = data["email"] ?? "";
+      _nickName = data["nickName"] ?? "";
+    } else if (result.isError) {
+      _email = "信箱";
+      _nickName = "暱稱";
+    }
 
     notifyListeners();
   }

@@ -8,6 +8,8 @@ final authServiceProvider = AuthServices();
 final cloudStorageProvider = CloudStorage();
 
 class RegisterViewModel extends ChangeNotifier {
+  bool loadingStatus = false;
+
   RegisteredResult? registeredResult;
 
   bool _passwordVisible = true;
@@ -42,6 +44,8 @@ class RegisterViewModel extends ChangeNotifier {
       {required String email,
       required String password,
       required String nickName}) async {
+    loadingStatus = true;
+    notifyListeners();
     RegisteredResult result = await authServiceProvider
         .registerWithEmailPassword(email: email, password: password);
 
@@ -49,9 +53,12 @@ class RegisterViewModel extends ChangeNotifier {
       await cloudStorageProvider.saveUserData(
           uid: result.uid!, email: email, nickName: nickName);
       registeredResult = result;
+      loadingStatus = false;
+
       notifyListeners();
     } else {
       registeredResult = result;
+      loadingStatus = false;
       notifyListeners();
     }
   }

@@ -20,10 +20,8 @@ class _ShareHomePageState extends State<ShareHomePage> {
     final Padding gap = Padding(padding: EdgeInsets.all(4));
 
     return Scaffold(
-      drawer: Drawer(
-        child: AccountPage(
-            // appBloc: bloc,
-            ),
+      drawer: const Drawer(
+        child: AccountPage(),
       ),
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -137,12 +135,10 @@ class _ShareHomePageState extends State<ShareHomePage> {
                   ),
                 ),
                 gap,
-                Container(
-                  child: Text(
-                    "2023/01/23",
-                    style: textgetter.bodySmall
-                        ?.copyWith(color: Color(0xff2E2E2E)),
-                  ),
+                Text(
+                  "2023/01/23",
+                  style:
+                      textgetter.bodySmall?.copyWith(color: Color(0xff2E2E2E)),
                 ),
               ],
             ),

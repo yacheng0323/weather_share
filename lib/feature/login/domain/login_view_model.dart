@@ -6,6 +6,8 @@ import 'package:weather_share/entities/remote/signIn_result.dart';
 final authServiceProvider = AuthServices();
 
 class LoginViewModel extends ChangeNotifier {
+  bool loadingStatus = false;
+
   User? user;
 
   SignInResult? signInResult;
@@ -27,9 +29,12 @@ class LoginViewModel extends ChangeNotifier {
   // }
 
   Future<void> signIn({required String email, required String password}) async {
-    SignInResult signInResult = await authServiceProvider
-        .signInWithEmailPassword(email: email, password: password);
-    this.signInResult = signInResult;
+    loadingStatus = true;
+    notifyListeners();
+    SignInResult result = await authServiceProvider.signInWithEmailPassword(
+        email: email, password: password);
+    signInResult = result;
+    loadingStatus = false;
     notifyListeners();
   }
 }

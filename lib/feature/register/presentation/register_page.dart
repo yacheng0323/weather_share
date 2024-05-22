@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -178,51 +179,79 @@ class _RegisterPageState extends State<RegisterPage> {
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor:
                                               const Color(0xff448BF7),
+                                          disabledBackgroundColor:
+                                              Color(0xffA9D3FC),
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(4))),
-                                      onPressed: () async {
-                                        if (formKey.currentState?.validate() ==
-                                            true) {
-                                          if (provider
-                                                  .isPrivacyPolicyAccepted ==
-                                              false) {
-                                            ShowSnackBarHelper.errorSnackBar(
-                                                    context: context)
-                                                .showSnackbar(
-                                                    "請確認您已勾選同意隱私權政策及服務條款。");
-                                          } else {
-                                            await provider.register(
-                                                email: emailController.text,
-                                                password:
-                                                    passwordController.text,
-                                                nickName:
-                                                    nicknameController.text);
+                                      onPressed: provider.loadingStatus
+                                          ? null
+                                          : () async {
+                                              if (formKey.currentState
+                                                      ?.validate() ==
+                                                  true) {
+                                                if (provider
+                                                        .isPrivacyPolicyAccepted ==
+                                                    false) {
+                                                  ShowSnackBarHelper
+                                                          .errorSnackBar(
+                                                              context: context)
+                                                      .showSnackbar(
+                                                          "請確認您已勾選同意隱私權政策及服務條款。");
+                                                } else {
+                                                  await provider.register(
+                                                      email:
+                                                          emailController.text,
+                                                      password:
+                                                          passwordController
+                                                              .text,
+                                                      nickName:
+                                                          nicknameController
+                                                              .text);
 
-                                            if (provider.registeredResult
-                                                    ?.isRegistered ==
-                                                true) {
-                                              ShowSnackBarHelper
-                                                      .successSnackBar(
-                                                          context: context)
-                                                  .showSnackbar("註冊成功！");
-                                              Navigator.pop(context);
-                                            } else {
-                                              ShowSnackBarHelper.errorSnackBar(
-                                                      context: context)
-                                                  .showSnackbar(provider
-                                                          .registeredResult
-                                                          ?.errorMessage ??
-                                                      "");
-                                            }
-                                          }
-                                        }
-                                      },
-                                      child: Text(
-                                        "註冊",
-                                        style: textgetter.bodyMedium
-                                            ?.copyWith(color: Colors.white),
+                                                  if (provider.registeredResult
+                                                          ?.isRegistered ==
+                                                      true) {
+                                                    ShowSnackBarHelper
+                                                            .successSnackBar(
+                                                                context:
+                                                                    context)
+                                                        .showSnackbar("註冊成功！");
+                                                    Navigator.pop(context);
+                                                  } else {
+                                                    ShowSnackBarHelper
+                                                            .errorSnackBar(
+                                                                context:
+                                                                    context)
+                                                        .showSnackbar(provider
+                                                                .registeredResult
+                                                                ?.errorMessage ??
+                                                            "");
+                                                  }
+                                                }
+                                              }
+                                            },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "註冊",
+                                            style: textgetter.bodyMedium
+                                                ?.copyWith(color: Colors.white),
+                                          ),
+                                          provider.loadingStatus
+                                              ? Container(
+                                                  padding: EdgeInsets.fromLTRB(
+                                                      8, 0, 0, 0),
+                                                  child:
+                                                      CupertinoActivityIndicator(
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              : SizedBox.shrink(),
+                                        ],
                                       ),
                                     ),
                                   ),
