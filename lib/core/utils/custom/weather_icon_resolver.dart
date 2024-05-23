@@ -3,11 +3,11 @@ import 'package:weather_share/feature/publish/data/weather_model.dart';
 class WeatherIconResolver {
   static String resolveWeatherIcon(String weather) {
     switch (weather) {
-      case "sunny":
+      case "晴天":
         return "image/weather/sunny.png";
-      case "rainy":
+      case "雨天":
         return "image/weather/rainy.png";
-      case "cloudy":
+      case "陰天":
         return "image/weather/cloudy.png";
       default:
         return "";

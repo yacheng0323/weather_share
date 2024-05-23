@@ -3,27 +3,27 @@ import 'package:weather_share/feature/publish/data/country_model.dart';
 class CountryIconResolver {
   static String resolveCountryIcon(String country) {
     switch (country) {
-      case "Taiwan":
+      case "臺灣":
         return "image/country/Taiwan.png";
-      case "China":
+      case "中國":
         return "image/country/China.png";
-      case "Japan":
+      case "日本":
         return "image/country/Japan.png";
-      case "Korean":
+      case "韓國":
         return "image/country/Korean.png";
-      case "America":
+      case "美國":
         return "image/country/America.png";
-      case "Canada":
+      case "加拿大":
         return "image/country/Canada.png";
-      case "England":
+      case "英格蘭":
         return "image/country/England.png";
-      case "France":
+      case "法國":
         return "image/country/France.png";
-      case "Australia":
+      case "澳洲":
         return "image/country/Australia.png";
-      case "Italy":
+      case "義大利":
         return "image/country/Italy.png";
-      case "Spain":
+      case "西班牙":
         return "image/country/Spain.png";
       default:
         return "";

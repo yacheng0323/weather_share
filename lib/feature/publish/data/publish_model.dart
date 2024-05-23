@@ -6,6 +6,7 @@ class PublishModel {
   final String weather;
   final String country;
   final List<String> likedBy;
+  final int reportCount;
   PublishModel(
       {required this.author,
       required this.content,
@@ -13,6 +14,7 @@ class PublishModel {
       required this.imageURL,
       required this.weather,
       required this.country,
+      this.reportCount = 0,
       List<String>? likedBy})
       : likedBy = likedBy ?? [];
 
@@ -25,6 +27,7 @@ class PublishModel {
       "weather": weather,
       "country": country,
       "likedBy": likedBy,
+      "reportCount": reportCount,
     };
   }
 }

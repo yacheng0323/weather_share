@@ -56,7 +56,26 @@ class _PublishPageState extends State<PublishPage> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        showCupertinoDialog(
+                            context: context,
+                            builder: (context) => CupertinoAlertDialog(
+                                  title: const Text("確定要放棄編輯貼文嗎?"),
+                                  actions: [
+                                    CupertinoActionSheetAction(
+                                      child: Text("取消"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    CupertinoActionSheetAction(
+                                      child: const Text('確定'),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ));
                       },
                       icon: const Icon(
                         Icons.close_outlined,
@@ -122,7 +141,8 @@ class _PublishPageState extends State<PublishPage> {
                                       children: [
                                         Image.asset(
                                             "image/selectImage_placeholder.png"),
-                                        Padding(padding: EdgeInsets.all(2)),
+                                        const Padding(
+                                            padding: EdgeInsets.all(2)),
                                         Text(
                                           "新增圖片",
                                           style: textgetter.bodyMedium
@@ -146,6 +166,9 @@ class _PublishPageState extends State<PublishPage> {
                         maxLines: 300,
                         style: textgetter.bodyLarge
                             ?.copyWith(color: Color(0xff2E2E2E)),
+                        onChanged: (value) {
+                          provider.onChangeContent(value: value);
+                        },
                         decoration: InputDecoration(
                             hintText: "輸入文字...",
                             hintStyle: textgetter.bodyMedium
@@ -282,13 +305,93 @@ class _PublishPageState extends State<PublishPage> {
                           ),
                           onPressed: () async {
                             provider.validateForm();
+
                             if (provider.notValidateMessage!.isNotEmpty) {
                               ShowSnackBarHelper.errorSnackBar(context: context)
                                   .showSnackbar(
                                       provider.notValidateMessage ?? "");
-                            } else {
-                              // await provider.publish();
+                              return;
                             }
+
+                            await provider.publish();
+
+                            if (provider.publishResult?.isPublished == true) {
+                              ShowSnackBarHelper.successSnackBar(
+                                      context: context)
+                                  .showSnackbar("新增貼文成功！");
+                              Navigator.pop(context);
+                            }
+
+                            // showCupertinoDialog(
+                            //   context: context,
+                            //   builder: (context) => CupertinoAlertDialog(
+                            //     title: const Text("是否要發表貼文?"),
+                            //     actions: [
+                            //       CupertinoActionSheetAction(
+                            //         child: Text("取消"),
+                            //         onPressed: () {
+                            //           Navigator.pop(context);
+                            //         },
+                            //       ),
+                            //       CupertinoActionSheetAction(
+                            //         child: const Text('確定'),
+                            //         onPressed: () async {
+                            //           Navigator.pop(context);
+
+                            //           }
+                            //           ShowSnackBarHelper.successSnackBar(
+                            //                   context: context)
+                            //               .showSnackbar(provider.publishResult
+                            //                       ?.errorMessage ??
+                            //                   "");
+                            //         },
+                            //       ),
+                            //     ],
+                            //   ),
+                            // );
+                            // provider.validateForm();
+
+                            // if (provider.notValidateMessage!.isNotEmpty) {
+                            //   ShowSnackBarHelper.errorSnackBar(context: context)
+                            //       .showSnackbar(
+                            //           provider.notValidateMessage ?? "");
+                            // } else {
+                            // showCupertinoDialog(
+                            //     context: context,
+                            //     builder: (context) => CupertinoAlertDialog(
+                            //           title: const Text("是否要發表貼文?"),
+                            //           actions: [
+                            //             CupertinoActionSheetAction(
+                            //               child: Text("取消"),
+                            //               onPressed: () {
+                            //                 Navigator.pop(context);
+                            //               },
+                            //             ),
+                            //             CupertinoActionSheetAction(
+                            //               child: const Text('確定'),
+                            //               onPressed: () async {
+                            //                 Navigator.pop(context);
+                            //                 await provider.publish();
+
+                            //                 if (provider.publishResult
+                            //                         ?.isPublished ==
+                            //                     true) {
+                            //                   ShowSnackBarHelper
+                            //                           .successSnackBar(
+                            //                               context: context)
+                            //                       .showSnackbar("新增貼文成功！");
+                            //                 }
+                            //                 ShowSnackBarHelper
+                            //                         .successSnackBar(
+                            //                             context: context)
+                            //                     .showSnackbar(provider
+                            //                             .publishResult
+                            //                             ?.errorMessage ??
+                            //                         "");
+                            //               },
+                            //             ),
+                            //           ],
+                            //         ));
                           },
                           child: Text(
                             "發表",

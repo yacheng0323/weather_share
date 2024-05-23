@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_share/core/service/auth_service.dart';
 import 'package:weather_share/core/service/cloud_storage.dart';
 import 'package:weather_share/core/service/image_helper.dart';
 import 'package:weather_share/core/utils/custom/country_icon_resolver.dart';
@@ -12,8 +14,12 @@ final imageHelperProvider = ImageHelper();
 
 final cloudStorageProvider = CloudStorage();
 
+final authServicesProvider = AuthServices();
+
 class PublishViewModel extends ChangeNotifier {
   PublishResult? publishResult;
+
+  bool loadingStatus = false;
 
   List<WeatherModel> weatherList = WeatherIconResolver.weatherList;
 
@@ -58,6 +64,11 @@ class PublishViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onChangeContent({required String value}) {
+    _content = value;
+    notifyListeners();
+  }
+
   void validateForm() {
     String message = "";
     if (_imagePath == null) {
@@ -79,18 +90,35 @@ class PublishViewModel extends ChangeNotifier {
   }
 
   Future<void> publish() async {
-    String imageURL =
-        await imageHelperProvider.uploadImageToFirebaseStorage(_imagePath!);
-
-    // PublishModel data = PublishModel(
-    // author: author,
-    //     content: _content ?? "",
-    //     timestamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-    //     imageURL: imageURL,
-    //     weather: _weather!.text,
-    //     country: _country!.text);
-    // publishResult =
-    //     await cloudStorageProvider.createPost(publishModel: publishModel);
+    loadingStatus = true;
     notifyListeners();
+    try {
+      String imageURL =
+          await imageHelperProvider.uploadImageToFirebaseStorage(_imagePath!);
+      String? uid;
+
+      User? user = await authServicesProvider.getUser();
+      if (user != null) {
+        uid = user.uid;
+      }
+
+      PublishModel data = PublishModel(
+          author: uid ?? "",
+          content: _content ?? "",
+          timestamp: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+          imageURL: imageURL,
+          weather: _weather!.text,
+          country: _country!.text);
+      publishResult =
+          await cloudStorageProvider.createArticle(publishModel: data);
+      loadingStatus = false;
+
+      notifyListeners();
+    } catch (e) {
+      publishResult =
+          PublishResult(isPublished: false, errorMessage: "發表文章失敗。");
+      loadingStatus = false;
+      notifyListeners();
+    }
   }
 }

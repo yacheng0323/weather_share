@@ -6,12 +6,15 @@ import 'package:weather_share/core/service/auth_service.dart';
 import 'package:weather_share/entities/remote/get_attributes_result.dart';
 import 'package:weather_share/entities/remote/publish_result.dart';
 import 'package:weather_share/feature/publish/data/publish_model.dart';
+import 'package:weather_share/feature/sharehome/data/article_model.dart';
+import 'package:weather_share/feature/sharehome/data/user_model.dart';
 
 final authServiceProvider = AuthServices();
 
 class CloudStorage extends ChangeNotifier {
   final FirebaseFirestore _fireStoreDB = FirebaseFirestore.instance;
 
+  //* 取得使用者屬性
   Future<GetAttributesResult<Map<String, dynamic>>> getUserAttributes() async {
     try {
       User? user = await authServiceProvider.getUser();
@@ -29,6 +32,7 @@ class CloudStorage extends ChangeNotifier {
     }
   }
 
+  //* 儲存使用者資料
   Future<void> saveUserData({
     required String uid,
     required String email,
@@ -40,14 +44,12 @@ class CloudStorage extends ChangeNotifier {
     };
     try {
       await _fireStoreDB.collection("users").doc(uid).set(userAttributes);
-      // _fireStoreDB
-// final ss = await _fireStorageDB.collection("wwdw").where("field",isEqualTo: "ss").get();
-// FirebaseStorage.instance.ref().child(path)
     } catch (err, s) {
       throw Error.throwWithStackTrace(err, s);
     }
   }
 
+  //* 更新使用者屬性
   Future<bool> updateUserData({required String nickName}) async {
     try {
       User? user = await authServiceProvider.getUser();
@@ -63,7 +65,35 @@ class CloudStorage extends ChangeNotifier {
     }
   }
 
-  Future<PublishResult> createPost({required PublishModel publishModel}) async {
+  //* 取得文章列表
+  Future<List<ArticleModel>> getArticle() async {
+    List<ArticleModel> articleList = [];
+    try {
+      final postsSnapshot = await _fireStoreDB.collection("posts").get();
+      for (var doc in postsSnapshot.docs) {
+        final authorId = doc.data()["author"];
+        final userDoc =
+            await _fireStoreDB.collection("users").doc(authorId).get();
+
+        ArticleModel article = ArticleModel.fromFirestore(doc, userDoc, null);
+
+        articleList.add(article);
+      }
+      return articleList;
+    } catch (e) {
+      log("Error getting articles: $e");
+      return articleList;
+    }
+  }
+
+  // Future<void> updateArticle() async {
+  //         await _fireStoreDB.collection("posts").doc(uid).update(userAttributes);
+
+  // }
+
+  //* 發表貼文
+  Future<PublishResult> createArticle(
+      {required PublishModel publishModel}) async {
     try {
       // 生成id
       String postId = _fireStoreDB.collection('posts').doc().id;
