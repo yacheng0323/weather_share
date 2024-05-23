@@ -39,8 +39,6 @@ class ShareHomeViewModel extends ChangeNotifier {
       articleList[index] = article.copyWith(isLike: like);
       notifyListeners();
     }
-    // articleList = await cloudStorageProvider.getArticle();
-    // articleList.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
 
     notifyListeners();
   }
@@ -51,14 +49,6 @@ class ShareHomeViewModel extends ChangeNotifier {
   }) async {
     updateArticleResult = await cloudStorageProvider.updateReportCount(
         postId: postId, article: article);
-
-    // final index = articleList.indexWhere((element) => element.postId == postId);
-    // if (index != -1) {
-    //   articleList[index] = article.copyWith(isLike: like);
-    //   notifyListeners();
-    // }
-    // articleList = await cloudStorageProvider.getArticle();
-    // articleList.sort((a, b) => b.timestamp!.compareTo(a.timestamp!));
 
     notifyListeners();
   }

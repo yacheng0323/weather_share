@@ -71,7 +71,7 @@ class ArticleModel {
       final userData = userSnapshot.data();
 
       bool isLike = (articleData?["likedBy"] as List)
-          .contains(articleData?["author"].toString());
+          .contains(userData?["email"].toString());
 
       List<String>? likedByList =
           (articleData?["likedBy"] as List<dynamic>?)?.cast<String>();

@@ -8,10 +8,12 @@ import 'package:weather_share/core/styles/textgetter.dart';
 import 'package:weather_share/core/utils/custom/show_privacy_dialog.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:weather_share/feature/account/account_view_model.dart';
+import 'package:weather_share/feature/sharehome/domain/share_home_view_model.dart';
 
 @RoutePage()
 class AccountPage extends StatefulWidget {
-  const AccountPage({super.key});
+  const AccountPage({super.key, required this.shareHomeViewModel});
+  final ShareHomeViewModel shareHomeViewModel;
 
   @override
   State<AccountPage> createState() => _AccountPageState();
@@ -90,6 +92,20 @@ class _AccountPageState extends State<AccountPage> {
                           style: textgetter.bodyLarge
                               ?.copyWith(color: const Color(0xff787878)),
                         ),
+                      ),
+                      divider,
+                      ListTile(
+                        leading: Icon(Symbols.post),
+                        title: Text(
+                          "管理貼文",
+                          style: textgetter.bodyLarge
+                              ?.copyWith(color: const Color(0xff787878)),
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          AutoRouter.of(context).push(ManageArticleRoute(
+                              shareHomeViewModel: widget.shareHomeViewModel));
+                        },
                       ),
                       divider,
                       ListTile(

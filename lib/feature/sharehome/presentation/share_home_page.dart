@@ -44,8 +44,10 @@ class _ShareHomePageState extends State<ShareHomePage> {
         return Consumer<ShareHomeViewModel>(
           builder: (context, provider, child) {
             return Scaffold(
-              drawer: const Drawer(
-                child: AccountPage(),
+              drawer: Drawer(
+                child: AccountPage(
+                  shareHomeViewModel: provider,
+                ),
               ),
               appBar: AppBar(
                 iconTheme: const IconThemeData(color: Colors.white),
@@ -162,13 +164,6 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                           },
                                         ),
                                       ),
-                                      // icon: item.isLike!
-                                      //     ? Icon(
-                                      //         Icons.favorite,
-                                      //         color: Colors.red,
-                                      //       )
-                                      //     : Icon(Icons
-                                      //         .favorite_border_outlined)),
                                       IconButton(
                                         onPressed: () {},
                                         iconSize: 20, // desired size

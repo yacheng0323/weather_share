@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weather_share/core/service/auth_service.dart';
+import 'package:weather_share/entities/remote/delete_article_result.dart';
 import 'package:weather_share/entities/remote/get_attributes_result.dart';
 import 'package:weather_share/entities/remote/publish_result.dart';
 import 'package:weather_share/entities/remote/update_article_result.dart';
@@ -87,10 +88,37 @@ class CloudStorage extends ChangeNotifier {
     }
   }
 
+//* 取得文章列表
+  Future<List<ArticleModel>> getArticleWithUid() async {
+    List<ArticleModel> articleList = [];
+    try {
+      User? user = await authServiceProvider.getUser();
+      String uid = user != null ? user.uid : "";
+      final postsSnapshot = await _fireStoreDB
+          .collection("posts")
+          .where("author", isEqualTo: uid)
+          .get();
+      for (var doc in postsSnapshot.docs) {
+        final authorId = doc.data()["author"];
+        final userDoc =
+            await _fireStoreDB.collection("users").doc(authorId).get();
+
+        ArticleModel article = ArticleModel.fromFirestore(doc, userDoc, null);
+
+        articleList.add(article);
+      }
+      return articleList;
+    } catch (e) {
+      log("Error getting articles: $e");
+      return articleList;
+    }
+  }
+
+  //* 點擊關注
   Future<UpdateArticleResult> updateLiked(
       {required String postId, required ArticleModel article}) async {
     User? user = await authServiceProvider.getUser();
-    String uid = user != null ? user.uid : "";
+    String? email = user != null ? user.email : "";
     DocumentReference postRef = _fireStoreDB.collection("posts").doc(postId);
 
     DocumentSnapshot postSnapshot = await postRef.get();
@@ -98,12 +126,12 @@ class CloudStorage extends ChangeNotifier {
     if (postSnapshot.exists) {
       List<String> likedByList = List<String>.from(postSnapshot.get("likedBy"));
 
-      if (likedByList.contains(uid)) {
-        likedByList.removeWhere((element) => element == uid);
+      if (likedByList.contains(email)) {
+        likedByList.removeWhere((element) => element == email);
         await postRef.update({"likedBy": likedByList});
         return UpdateArticleResult(isSuccess: true);
       }
-      likedByList.add(uid);
+      likedByList.add(email!);
 
       await postRef.update({"likedBy": likedByList});
       return UpdateArticleResult(isSuccess: true, message: "");
@@ -112,10 +140,11 @@ class CloudStorage extends ChangeNotifier {
     }
   }
 
+  //* 舉報貼文
   Future<UpdateArticleResult> updateReportCount(
       {required String postId, required ArticleModel article}) async {
     User? user = await authServiceProvider.getUser();
-    String uid = user != null ? user.uid : "";
+    String? email = user != null ? user.email : "";
     DocumentReference postRef = _fireStoreDB.collection("posts").doc(postId);
 
     DocumentSnapshot postSnapshot = await postRef.get();
@@ -124,15 +153,15 @@ class CloudStorage extends ChangeNotifier {
       List<String> reportCountList =
           List<String>.from(postSnapshot.get("reportCount"));
 
-      if (reportCountList.contains(uid)) {
-        return UpdateArticleResult(isSuccess: false, message: "已經檢舉過此貼文了。");
+      if (reportCountList.contains(email)) {
+        return UpdateArticleResult(isSuccess: false, message: "已經舉報過此貼文了。");
       }
-      reportCountList.add(uid);
+      reportCountList.add(email!);
 
       await postRef.update({"reportCount": reportCountList});
-      return UpdateArticleResult(isSuccess: true, message: "檢舉成功。");
+      return UpdateArticleResult(isSuccess: true, message: "舉報成功。");
     } else {
-      return UpdateArticleResult(isSuccess: false, message: "檢舉失敗。");
+      return UpdateArticleResult(isSuccess: false, message: "舉報失敗。");
     }
   }
 
@@ -150,6 +179,15 @@ class CloudStorage extends ChangeNotifier {
       return PublishResult(isPublished: true);
     } catch (e) {
       return PublishResult(isPublished: false, errorMessage: "發表文章失敗。");
+    }
+  }
+
+  Future<DeleteArticleResult> deleteArticle({required String postId}) async {
+    try {
+      await _fireStoreDB.collection("posts").doc(postId).delete();
+      return DeleteArticleResult(isSuccess: true);
+    } catch (e) {
+      return DeleteArticleResult(isSuccess: false, errorMessage: "刪除失敗。");
     }
   }
 }

@@ -15,5 +15,6 @@ class AppRouter extends $AppRouter {
         AutoRoute(page: PublishPageRoute.page, fullscreenDialog: true),
         AutoRoute(page: ForgotPasswordPageRoute.page),
         AutoRoute(page: ChangePasswordPageRoute.page),
+        AutoRoute(page: ManageArticleRoute.page),
       ];
 }
