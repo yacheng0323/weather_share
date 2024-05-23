@@ -6,17 +6,17 @@ class PublishModel {
   final String weather;
   final String country;
   final List<String> likedBy;
-  final int reportCount;
-  PublishModel(
-      {required this.author,
-      required this.content,
-      required this.timestamp,
-      required this.imageURL,
-      required this.weather,
-      required this.country,
-      this.reportCount = 0,
-      List<String>? likedBy})
-      : likedBy = likedBy ?? [];
+  final List<String> reportCount;
+  PublishModel({
+    required this.author,
+    required this.content,
+    required this.timestamp,
+    required this.imageURL,
+    required this.weather,
+    required this.country,
+    this.reportCount = const [],
+    this.likedBy = const [],
+  });
 
   Map<String, dynamic> toMap() {
     return {

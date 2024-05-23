@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:weather_share/core/router/app_router.gr.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
 import 'package:weather_share/core/utils/custom/country_icon_resolver.dart';
+import 'package:weather_share/core/utils/custom/show_snack.bar.dart';
 import 'package:weather_share/core/utils/custom/weather_icon_resolver.dart';
 import 'package:weather_share/feature/account/account_page.dart';
 import 'package:weather_share/feature/sharehome/domain/share_home_view_model.dart';
@@ -112,25 +113,24 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
-                                    // color: Colors.orange,
                                   ),
-                                  child: ImageNetwork(
-                                    image: item.imageURL ?? "",
-                                    height: 200,
-                                    width: MediaQuery.of(context).size.width,
-                                    duration: 500,
-                                    debugPrint: false,
-                                    fullScreen: false,
-                                    fitAndroidIos: BoxFit.cover,
-                                    fitWeb: BoxFitWeb.cover,
-                                    borderRadius: BorderRadius.circular(8),
-                                    onLoading: const CircularProgressIndicator(
-                                      color: Colors.indigoAccent,
+                                  child: CachedNetworkImage(
+                                    imageUrl: item.imageURL ?? "",
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover)),
                                     ),
-                                    onError: const Icon(
-                                      Icons.error,
-                                      color: Colors.red,
-                                    ),
+                                    progressIndicatorBuilder:
+                                        (context, url, downloadProgress) {
+                                      return const CupertinoActivityIndicator();
+                                    },
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                   ),
                                 ),
                                 // gap,
@@ -141,13 +141,34 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                         padding: EdgeInsets.all(8),
                                         constraints: BoxConstraints(),
                                         iconSize: 20,
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          await provider.toggleLike(
+                                              postId: item.postId ?? "",
+                                              article: item,
+                                              like: !item.isLike!);
+                                        },
                                         style: ButtonStyle(
                                             tapTargetSize: MaterialTapTargetSize
                                                 .shrinkWrap),
-                                        icon: Icon(
-                                            Icons.favorite_border_outlined),
+                                        icon: Consumer<ShareHomeViewModel>(
+                                          builder: (context, provider, _) {
+                                            return item.isLike!
+                                                ? Icon(
+                                                    Icons.favorite,
+                                                    color: Colors.red,
+                                                  )
+                                                : Icon(Icons
+                                                    .favorite_border_outlined);
+                                          },
+                                        ),
                                       ),
+                                      // icon: item.isLike!
+                                      //     ? Icon(
+                                      //         Icons.favorite,
+                                      //         color: Colors.red,
+                                      //       )
+                                      //     : Icon(Icons
+                                      //         .favorite_border_outlined)),
                                       IconButton(
                                         onPressed: () {},
                                         iconSize: 20, // desired size
@@ -191,13 +212,36 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                                     ),
                                                     TextButton(
                                                       onPressed: () async {
-                                                        // await provider
-                                                        //     .signOut();
-                                                        // // Navigator.pop(context);
-                                                        // AutoRouter.of(context)
-                                                        //     .replaceAll([
-                                                        //   const LoginPageRoute()
-                                                        // ]);
+                                                        Navigator.pop(context);
+                                                        await provider
+                                                            .reportContent(
+                                                                postId:
+                                                                    item.postId ??
+                                                                        "",
+                                                                article: item);
+
+                                                        if (provider
+                                                                .updateArticleResult
+                                                                ?.isSuccess ==
+                                                            true) {
+                                                          ShowSnackBarHelper
+                                                                  .successSnackBar(
+                                                                      context:
+                                                                          context)
+                                                              .showSnackbar(provider
+                                                                      .updateArticleResult
+                                                                      ?.message ??
+                                                                  "");
+                                                        } else {
+                                                          ShowSnackBarHelper
+                                                                  .errorSnackBar(
+                                                                      context:
+                                                                          context)
+                                                              .showSnackbar(provider
+                                                                      .updateArticleResult
+                                                                      ?.message ??
+                                                                  "");
+                                                        }
                                                       },
                                                       child: const Text("確定"),
                                                     ),

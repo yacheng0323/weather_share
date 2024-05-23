@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:weather_share/core/service/auth_service.dart';
 import 'package:weather_share/entities/remote/get_attributes_result.dart';
 import 'package:weather_share/entities/remote/publish_result.dart';
+import 'package:weather_share/entities/remote/update_article_result.dart';
 import 'package:weather_share/feature/publish/data/publish_model.dart';
 import 'package:weather_share/feature/sharehome/data/article_model.dart';
 import 'package:weather_share/feature/sharehome/data/user_model.dart';
@@ -86,10 +87,54 @@ class CloudStorage extends ChangeNotifier {
     }
   }
 
-  // Future<void> updateArticle() async {
-  //         await _fireStoreDB.collection("posts").doc(uid).update(userAttributes);
+  Future<UpdateArticleResult> updateLiked(
+      {required String postId, required ArticleModel article}) async {
+    User? user = await authServiceProvider.getUser();
+    String uid = user != null ? user.uid : "";
+    DocumentReference postRef = _fireStoreDB.collection("posts").doc(postId);
 
-  // }
+    DocumentSnapshot postSnapshot = await postRef.get();
+
+    if (postSnapshot.exists) {
+      List<String> likedByList = List<String>.from(postSnapshot.get("likedBy"));
+
+      if (likedByList.contains(uid)) {
+        likedByList.removeWhere((element) => element == uid);
+        await postRef.update({"likedBy": likedByList});
+        return UpdateArticleResult(isSuccess: true);
+      }
+      likedByList.add(uid);
+
+      await postRef.update({"likedBy": likedByList});
+      return UpdateArticleResult(isSuccess: true, message: "");
+    } else {
+      return UpdateArticleResult(isSuccess: false, message: "關注失敗。");
+    }
+  }
+
+  Future<UpdateArticleResult> updateReportCount(
+      {required String postId, required ArticleModel article}) async {
+    User? user = await authServiceProvider.getUser();
+    String uid = user != null ? user.uid : "";
+    DocumentReference postRef = _fireStoreDB.collection("posts").doc(postId);
+
+    DocumentSnapshot postSnapshot = await postRef.get();
+
+    if (postSnapshot.exists) {
+      List<String> reportCountList =
+          List<String>.from(postSnapshot.get("reportCount"));
+
+      if (reportCountList.contains(uid)) {
+        return UpdateArticleResult(isSuccess: false, message: "已經檢舉過此貼文了。");
+      }
+      reportCountList.add(uid);
+
+      await postRef.update({"reportCount": reportCountList});
+      return UpdateArticleResult(isSuccess: true, message: "檢舉成功。");
+    } else {
+      return UpdateArticleResult(isSuccess: false, message: "檢舉失敗。");
+    }
+  }
 
   //* 發表貼文
   Future<PublishResult> createArticle(
