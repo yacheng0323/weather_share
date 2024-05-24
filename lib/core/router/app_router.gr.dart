@@ -74,9 +74,13 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       );
     },
     PublishPageRoute.name: (routeData) {
+      final args = routeData.argsAs<PublishPageRouteArgs>();
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i6.PublishPage(),
+        child: _i6.PublishPage(
+          key: args.key,
+          shareHomeViewModel: args.shareHomeViewModel,
+        ),
       );
     },
     RegisterPageRoute.name: (routeData) {
@@ -220,16 +224,40 @@ class ManageArticleRouteArgs {
 
 /// generated route for
 /// [_i6.PublishPage]
-class PublishPageRoute extends _i10.PageRouteInfo<void> {
-  const PublishPageRoute({List<_i10.PageRouteInfo>? children})
-      : super(
+class PublishPageRoute extends _i10.PageRouteInfo<PublishPageRouteArgs> {
+  PublishPageRoute({
+    _i11.Key? key,
+    required _i12.ShareHomeViewModel shareHomeViewModel,
+    List<_i10.PageRouteInfo>? children,
+  }) : super(
           PublishPageRoute.name,
+          args: PublishPageRouteArgs(
+            key: key,
+            shareHomeViewModel: shareHomeViewModel,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'PublishPageRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i10.PageInfo<PublishPageRouteArgs> page =
+      _i10.PageInfo<PublishPageRouteArgs>(name);
+}
+
+class PublishPageRouteArgs {
+  const PublishPageRouteArgs({
+    this.key,
+    required this.shareHomeViewModel,
+  });
+
+  final _i11.Key? key;
+
+  final _i12.ShareHomeViewModel shareHomeViewModel;
+
+  @override
+  String toString() {
+    return 'PublishPageRouteArgs{key: $key, shareHomeViewModel: $shareHomeViewModel}';
+  }
 }
 
 /// generated route for

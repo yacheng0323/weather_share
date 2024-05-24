@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,11 +46,23 @@ class _AccountPageState extends State<AccountPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Container(
-                            color: Colors.white,
-                            width: 50,
-                            height: 50,
-                            child: Image.asset("image/avatar.png")),
+                        provider.avatar != null
+                            ? ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: provider.avatar!,
+                                  width: 70,
+                                  height: 70,
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(35),
+                                    color: Colors.white),
+                                width: 70,
+                                height: 70,
+                                child: Image.asset(
+                                  "image/avatar.png",
+                                )),
                         const Padding(padding: EdgeInsets.all(8)),
                         Text(
                           provider.nickName ?? "",

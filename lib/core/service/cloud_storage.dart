@@ -9,7 +9,6 @@ import 'package:weather_share/entities/remote/publish_result.dart';
 import 'package:weather_share/entities/remote/update_article_result.dart';
 import 'package:weather_share/feature/publish/data/publish_model.dart';
 import 'package:weather_share/feature/sharehome/data/article_model.dart';
-import 'package:weather_share/feature/sharehome/data/user_model.dart';
 
 final authServiceProvider = AuthServices();
 
@@ -52,11 +51,15 @@ class CloudStorage extends ChangeNotifier {
   }
 
   //* 更新使用者屬性
-  Future<bool> updateUserData({required String nickName}) async {
+  Future<bool> updateUserData(
+      {required String nickName, String? imageURL}) async {
     try {
       User? user = await authServiceProvider.getUser();
       String uid = user != null ? user.uid : "";
-      Map<String, dynamic> userAttributes = {"nickName": nickName};
+      Map<String, dynamic> userAttributes = {
+        "nickName": nickName,
+        "avatar": imageURL
+      };
       // 使用此方法，新增沒有的屬性
       await _fireStoreDB.collection("users").doc(uid).update(userAttributes);
 
@@ -67,17 +70,35 @@ class CloudStorage extends ChangeNotifier {
     }
   }
 
-  //* 取得文章列表
+  //* 取得所有文章列表
   Future<List<ArticleModel>> getArticle() async {
     List<ArticleModel> articleList = [];
     try {
       final postsSnapshot = await _fireStoreDB.collection("posts").get();
       for (var doc in postsSnapshot.docs) {
         final authorId = doc.data()["author"];
-        final userDoc =
-            await _fireStoreDB.collection("users").doc(authorId).get();
 
-        ArticleModel article = ArticleModel.fromFirestore(doc, userDoc, null);
+        User? currentUser = await authServiceProvider.getUser();
+        String currentUserId = currentUser!.uid;
+
+        // 獲取當前使用者的屬性
+        final currentUserDoc =
+            await _fireStoreDB.collection("users").doc(currentUserId).get();
+        if (!currentUserDoc.exists) {
+          // 處理當前用戶不存在的情況
+          throw Exception("Current user document does not exist");
+        }
+
+        // 獲取貼文作者
+        final authorDoc =
+            await _fireStoreDB.collection("users").doc(authorId).get();
+        if (!authorDoc.exists) {
+          // 處理貼文作者不存在的情況
+          throw Exception("Author document does not exist");
+        }
+
+        ArticleModel article =
+            ArticleModel.fromFirestore(doc, currentUserDoc, authorDoc, null);
 
         articleList.add(article);
       }
@@ -88,7 +109,7 @@ class CloudStorage extends ChangeNotifier {
     }
   }
 
-//* 取得文章列表
+//* 根據使用者id取得文章列表
   Future<List<ArticleModel>> getArticleWithUid() async {
     List<ArticleModel> articleList = [];
     try {
@@ -100,10 +121,28 @@ class CloudStorage extends ChangeNotifier {
           .get();
       for (var doc in postsSnapshot.docs) {
         final authorId = doc.data()["author"];
-        final userDoc =
-            await _fireStoreDB.collection("users").doc(authorId).get();
 
-        ArticleModel article = ArticleModel.fromFirestore(doc, userDoc, null);
+        User? currentUser = await authServiceProvider.getUser();
+        String currentUserId = currentUser!.uid;
+
+        // 獲取當前使用者的屬性
+        final currentUserDoc =
+            await _fireStoreDB.collection("users").doc(currentUserId).get();
+        if (!currentUserDoc.exists) {
+          // 處理當前用戶不存在的情況
+          throw Exception("Current user document does not exist");
+        }
+
+        // 獲取貼文作者
+        final authorDoc =
+            await _fireStoreDB.collection("users").doc(authorId).get();
+        if (!authorDoc.exists) {
+          // 處理貼文作者不存在的情況
+          throw Exception("Author document does not exist");
+        }
+
+        ArticleModel article =
+            ArticleModel.fromFirestore(doc, currentUserDoc, authorDoc, null);
 
         articleList.add(article);
       }
@@ -182,6 +221,7 @@ class CloudStorage extends ChangeNotifier {
     }
   }
 
+  //* 刪除貼文
   Future<DeleteArticleResult> deleteArticle({required String postId}) async {
     try {
       await _fireStoreDB.collection("posts").doc(postId).delete();

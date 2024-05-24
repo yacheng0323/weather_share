@@ -93,8 +93,8 @@ class PublishViewModel extends ChangeNotifier {
     loadingStatus = true;
     notifyListeners();
     try {
-      String imageURL =
-          await imageHelperProvider.uploadImageToFirebaseStorage(_imagePath!);
+      String imageURL = await imageHelperProvider.uploadImageToFirebaseStorage(
+          _imagePath!, false);
       String? uid;
 
       User? user = await authServicesProvider.getUser();

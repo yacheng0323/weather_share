@@ -13,6 +13,10 @@ class AccountViewModel extends ChangeNotifier {
 
   String? get nickName => _nickName;
 
+  String? _avatar;
+
+  String? get avatar => _avatar;
+
   Future<void> init() async {
     GetAttributesResult<Map<String, dynamic>> result =
         await cloudStorageProvider.getUserAttributes();
@@ -21,9 +25,11 @@ class AccountViewModel extends ChangeNotifier {
       Map<String, dynamic> data = result.data!;
       _email = data["email"] ?? "";
       _nickName = data["nickName"] ?? "";
+      _avatar = data["avatar"];
     } else if (result.isError) {
       _email = "信箱";
       _nickName = "暱稱";
+      _avatar = null;
     }
 
     notifyListeners();

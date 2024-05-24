@@ -60,7 +60,8 @@ class _ShareHomePageState extends State<ShareHomePage> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        AutoRouter.of(context).push(const PublishPageRoute());
+                        AutoRouter.of(context).push(
+                            PublishPageRoute(shareHomeViewModel: provider));
                       },
                       icon: const Icon(
                         Icons.add,
@@ -90,17 +91,25 @@ class _ShareHomePageState extends State<ShareHomePage> {
                               children: [
                                 Row(
                                   children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Color(0xffE6E6E6)),
-                                      child: Image.asset(
-                                        "image/avatar.png",
-                                        width: 16,
-                                        height: 16,
-                                      ),
-                                    ),
+                                    item.avatar != null
+                                        ? ClipOval(
+                                            child: CachedNetworkImage(
+                                              imageUrl: item.avatar ?? "",
+                                              width: 32,
+                                              height: 32,
+                                            ),
+                                          )
+                                        : Container(
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Color(0xffE6E6E6)),
+                                            child: Image.asset(
+                                              "image/avatar.png",
+                                              width: 16,
+                                              height: 16,
+                                            ),
+                                          ),
                                     gap,
                                     Text(
                                       item.nickName ?? "",
@@ -111,7 +120,7 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                 ),
                                 gap,
                                 Container(
-                                  height: 200,
+                                  height: 250,
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),

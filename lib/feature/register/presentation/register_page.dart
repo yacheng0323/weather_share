@@ -25,6 +25,11 @@ class _RegisterPageState extends State<RegisterPage> {
       TextEditingController();
   final TextEditingController nicknameController = TextEditingController();
 
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passwordFocusNode = FocusNode();
+  final FocusNode confirmPasswordFocusNode = FocusNode();
+  final FocusNode nickNameFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -58,212 +63,225 @@ class _RegisterPageState extends State<RegisterPage> {
                 systemOverlayStyle: SystemUiOverlayStyle.dark,
                 toolbarHeight: 0,
               ),
-              body: Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("image/background.png"),
-                        fit: BoxFit.cover,
+              body: GestureDetector(
+                onTap: () {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                },
+                child: Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage("image/background.png"),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  LayoutBuilder(
-                    builder: (context, constraints) {
-                      final keyboardHeight =
-                          MediaQuery.of(context).viewInsets.bottom;
-                      return SingleChildScrollView(
-                        padding: EdgeInsets.only(bottom: keyboardHeight),
-                        child: Form(
-                          key: formKey,
-                          child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                minHeight: constraints.maxHeight),
-                            child: IntrinsicHeight(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin:
-                                        const EdgeInsets.fromLTRB(0, 40, 0, 0),
-                                    width: 150,
-                                    height: 150,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(75),
-                                        border: Border.all(
-                                            color: const Color(0xff62B4ff),
-                                            width: 4)),
-                                    child: ClipRRect(
-                                        child: Image.asset(
-                                      "image/how's_the_weather.png",
-                                    )),
-                                  ),
-                                  _emailTextFormField(textgetter),
-                                  _passwordTextFormField(textgetter, provider),
-                                  _confirmPasswordTextFormField(
-                                      textgetter, provider),
-                                  _nickNameTextFormField(textgetter),
-                                  Container(
-                                    padding: const EdgeInsets.only(top: 16),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                          width: 20,
-                                          height: 20,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(4)),
-                                          child: Transform.scale(
-                                            scale: 1.2,
-                                            child: Checkbox(
-                                                side: BorderSide.none,
-                                                activeColor:
-                                                    const Color(0xff448EF7),
-                                                value: provider
-                                                    .isPrivacyPolicyAccepted,
-                                                onChanged: (value) {
-                                                  provider.toggleVisibility(
-                                                      RegisterVisibilityType
-                                                          .isPrivacyPolicyAccepted);
-                                                }),
-                                          ),
-                                        ),
-                                        const Padding(
-                                            padding: EdgeInsets.all(4)),
-                                        RichText(
-                                          text: TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                  text: "已閱讀服務條款及",
-                                                  style: textgetter.bodyMedium
-                                                      ?.copyWith(
-                                                          color: Colors.white)),
-                                              TextSpan(
-                                                text: "隱私權政策",
-                                                style: textgetter.bodyMedium
-                                                    ?.copyWith(
-                                                        color: Colors.white,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                        decorationColor:
-                                                            Colors.white),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () {
-                                                        ShowPrivacyDialog(
-                                                                context:
-                                                                    context)
-                                                            .call();
-                                                      },
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
+                    LayoutBuilder(
+                      builder: (context, constraints) {
+                        final keyboardHeight =
+                            MediaQuery.of(context).viewInsets.bottom;
+                        return SingleChildScrollView(
+                          padding: EdgeInsets.only(bottom: keyboardHeight),
+                          child: Form(
+                            key: formKey,
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(
+                                  minHeight: constraints.maxHeight),
+                              child: IntrinsicHeight(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      margin: const EdgeInsets.fromLTRB(
+                                          0, 40, 0, 0),
+                                      width: 150,
+                                      height: 150,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(75),
+                                          border: Border.all(
+                                              color: const Color(0xff62B4ff),
+                                              width: 4)),
+                                      child: ClipRRect(
+                                          child: Image.asset(
+                                        "image/how's_the_weather.png",
+                                      )),
                                     ),
-                                  ),
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 60),
-                                    padding:
-                                        const EdgeInsets.fromLTRB(24, 0, 24, 0),
-                                    width: MediaQuery.of(context).size.width,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              const Color(0xff448BF7),
-                                          disabledBackgroundColor:
-                                              Color(0xffA9D3FC),
-                                          elevation: 0,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(4))),
-                                      onPressed: provider.loadingStatus
-                                          ? null
-                                          : () async {
-                                              if (formKey.currentState
-                                                      ?.validate() ==
-                                                  true) {
-                                                if (provider
-                                                        .isPrivacyPolicyAccepted ==
-                                                    false) {
-                                                  ShowSnackBarHelper
-                                                          .errorSnackBar(
-                                                              context: context)
-                                                      .showSnackbar(
-                                                          "請確認您已勾選同意隱私權政策及服務條款。");
-                                                } else {
-                                                  await provider.register(
-                                                      email:
-                                                          emailController.text,
-                                                      password:
-                                                          passwordController
-                                                              .text,
-                                                      nickName:
-                                                          nicknameController
-                                                              .text);
-
-                                                  if (provider.registeredResult
-                                                          ?.isRegistered ==
-                                                      true) {
-                                                    ShowSnackBarHelper
-                                                            .successSnackBar(
-                                                                context:
-                                                                    context)
-                                                        .showSnackbar("註冊成功！");
-                                                    Navigator.pop(context);
-                                                  } else {
-                                                    ShowSnackBarHelper
-                                                            .errorSnackBar(
-                                                                context:
-                                                                    context)
-                                                        .showSnackbar(provider
-                                                                .registeredResult
-                                                                ?.errorMessage ??
-                                                            "");
-                                                  }
-                                                }
-                                              }
-                                            },
+                                    _emailTextFormField(textgetter),
+                                    _passwordTextFormField(
+                                        textgetter, provider),
+                                    _confirmPasswordTextFormField(
+                                        textgetter, provider),
+                                    _nickNameTextFormField(textgetter),
+                                    Container(
+                                      padding: const EdgeInsets.only(top: 16),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text(
-                                            "註冊",
-                                            style: textgetter.bodyMedium
-                                                ?.copyWith(color: Colors.white),
+                                          Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(4)),
+                                            child: Transform.scale(
+                                              scale: 1.2,
+                                              child: Checkbox(
+                                                  side: BorderSide.none,
+                                                  activeColor:
+                                                      const Color(0xff448EF7),
+                                                  value: provider
+                                                      .isPrivacyPolicyAccepted,
+                                                  onChanged: (value) {
+                                                    provider.toggleVisibility(
+                                                        RegisterVisibilityType
+                                                            .isPrivacyPolicyAccepted);
+                                                  }),
+                                            ),
                                           ),
-                                          provider.loadingStatus
-                                              ? Container(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      8, 0, 0, 0),
-                                                  child:
-                                                      CupertinoActivityIndicator(
-                                                    color: Colors.white,
-                                                  ),
-                                                )
-                                              : SizedBox.shrink(),
+                                          const Padding(
+                                              padding: EdgeInsets.all(4)),
+                                          RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                    text: "已閱讀服務條款及",
+                                                    style: textgetter.bodyMedium
+                                                        ?.copyWith(
+                                                            color:
+                                                                Colors.white)),
+                                                TextSpan(
+                                                  text: "隱私權政策",
+                                                  style: textgetter.bodyMedium
+                                                      ?.copyWith(
+                                                          color: Colors.white,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .underline,
+                                                          decorationColor:
+                                                              Colors.white),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          ShowPrivacyDialog(
+                                                                  context:
+                                                                      context)
+                                                              .call();
+                                                        },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 60),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          24, 0, 24, 0),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                const Color(0xff448BF7),
+                                            disabledBackgroundColor:
+                                                Color(0xffA9D3FC),
+                                            elevation: 0,
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(4))),
+                                        onPressed: provider.loadingStatus
+                                            ? null
+                                            : () async {
+                                                if (formKey.currentState
+                                                        ?.validate() ==
+                                                    true) {
+                                                  if (provider
+                                                          .isPrivacyPolicyAccepted ==
+                                                      false) {
+                                                    ShowSnackBarHelper
+                                                            .errorSnackBar(
+                                                                context:
+                                                                    context)
+                                                        .showSnackbar(
+                                                            "請確認您已勾選同意隱私權政策及服務條款。");
+                                                  } else {
+                                                    await provider.register(
+                                                        email: emailController
+                                                            .text,
+                                                        password:
+                                                            passwordController
+                                                                .text,
+                                                        nickName:
+                                                            nicknameController
+                                                                .text);
+
+                                                    if (provider
+                                                            .registeredResult
+                                                            ?.isRegistered ==
+                                                        true) {
+                                                      ShowSnackBarHelper
+                                                              .successSnackBar(
+                                                                  context:
+                                                                      context)
+                                                          .showSnackbar(
+                                                              "註冊成功！");
+                                                      Navigator.pop(context);
+                                                    } else {
+                                                      ShowSnackBarHelper
+                                                              .errorSnackBar(
+                                                                  context:
+                                                                      context)
+                                                          .showSnackbar(provider
+                                                                  .registeredResult
+                                                                  ?.errorMessage ??
+                                                              "");
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "註冊",
+                                              style: textgetter.bodyMedium
+                                                  ?.copyWith(
+                                                      color: Colors.white),
+                                            ),
+                                            provider.loadingStatus
+                                                ? Container(
+                                                    padding:
+                                                        EdgeInsets.fromLTRB(
+                                                            8, 0, 0, 0),
+                                                    child:
+                                                        CupertinoActivityIndicator(
+                                                      color: Colors.white,
+                                                    ),
+                                                  )
+                                                : SizedBox.shrink(),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                  )
-                ],
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
             );
           },
@@ -290,7 +308,12 @@ class _RegisterPageState extends State<RegisterPage> {
           Expanded(
             child: TextFormField(
               controller: emailController,
+              focusNode: emailFocusNode,
               inputFormatters: [LengthLimitingTextInputFormatter(100)],
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (value) {
+                FocusScope.of(context).requestFocus(passwordFocusNode);
+              },
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -334,7 +357,12 @@ class _RegisterPageState extends State<RegisterPage> {
               child: TextFormField(
             controller: passwordController,
             obscureText: provider.passwordVisible!,
+            focusNode: passwordFocusNode,
             inputFormatters: [LengthLimitingTextInputFormatter(50)],
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (value) {
+              FocusScope.of(context).requestFocus(confirmPasswordFocusNode);
+            },
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -395,7 +423,12 @@ class _RegisterPageState extends State<RegisterPage> {
               child: TextFormField(
             controller: confirmPasswordController,
             obscureText: provider.confirmPasswordVisible!,
+            focusNode: confirmPasswordFocusNode,
             inputFormatters: [LengthLimitingTextInputFormatter(50)],
+            textInputAction: TextInputAction.next,
+            onFieldSubmitted: (value) {
+              FocusScope.of(context).requestFocus(nickNameFocusNode);
+            },
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
@@ -448,7 +481,9 @@ class _RegisterPageState extends State<RegisterPage> {
           Expanded(
               child: TextFormField(
             controller: nicknameController,
+            focusNode: nickNameFocusNode,
             inputFormatters: [LengthLimitingTextInputFormatter(80)],
+            textInputAction: TextInputAction.done,
             decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,

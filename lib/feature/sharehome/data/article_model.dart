@@ -65,10 +65,12 @@ class ArticleModel {
   factory ArticleModel.fromFirestore(
       DocumentSnapshot<Map<String, dynamic>> articleSnapshot,
       DocumentSnapshot<Map<String, dynamic>> userSnapshot,
+      DocumentSnapshot<Map<String, dynamic>> displayAuthorSnapshot,
       SnapshotOptions? options) {
     try {
       final articleData = articleSnapshot.data();
       final userData = userSnapshot.data();
+      final displayAuthor = displayAuthorSnapshot.data();
 
       bool isLike = (articleData?["likedBy"] as List)
           .contains(userData?["email"].toString());
@@ -89,8 +91,8 @@ class ArticleModel {
           timestamp: articleData?["timestamp"],
           weather: articleData?["weather"],
           reportCount: reportCountList,
-          nickName: userData?["nickName"],
-          avatar: userData?["avatar"],
+          nickName: displayAuthor?["nickName"],
+          avatar: displayAuthor?["avatar"],
           isLike: isLike);
     } catch (err, s) {
       log("ArticleModel.fromJson", error: err, stackTrace: s);
