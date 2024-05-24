@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_network/image_network.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:weather_share/core/router/app_router.gr.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
 import 'package:weather_share/core/utils/custom/country_icon_resolver.dart';
@@ -12,6 +15,7 @@ import 'package:weather_share/core/utils/custom/show_snack.bar.dart';
 import 'package:weather_share/core/utils/custom/weather_icon_resolver.dart';
 import 'package:weather_share/feature/account/account_page.dart';
 import 'package:weather_share/feature/sharehome/domain/share_home_view_model.dart';
+import 'package:http/http.dart' as http;
 
 @RoutePage()
 class ShareHomePage extends StatefulWidget {
@@ -23,6 +27,7 @@ class ShareHomePage extends StatefulWidget {
 
 class _ShareHomePageState extends State<ShareHomePage> {
   GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey();
+  ScreenshotController screenshotController = ScreenshotController();
 
   @override
   void dispose() {
@@ -158,7 +163,7 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                               article: item,
                                               like: !item.isLike!);
                                         },
-                                        style: ButtonStyle(
+                                        style: const ButtonStyle(
                                             tapTargetSize: MaterialTapTargetSize
                                                 .shrinkWrap),
                                         icon: Consumer<ShareHomeViewModel>(
@@ -174,7 +179,23 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                         ),
                                       ),
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          final url = item.imageURL ?? "";
+                                          final text = item.content;
+
+                                          final response =
+                                              await http.get(Uri.parse(url));
+                                          final documentDirectory =
+                                              (await getApplicationDocumentsDirectory())
+                                                  .path;
+                                          final file = File(
+                                              '$documentDirectory/flutter_image.png');
+                                          file.writeAsBytesSync(
+                                              response.bodyBytes);
+
+                                          Share.shareXFiles([XFile(file.path)],
+                                              text: text);
+                                        },
                                         iconSize: 20, // desired size
                                         padding: EdgeInsets.all(8),
                                         constraints:
