@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:weather_share/core/service/cloud_storage.dart';
 import 'package:weather_share/entities/remote/get_attributes_result.dart';
 
@@ -33,6 +34,14 @@ class AccountViewModel extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  Future<void> navToURL({required String uri}) async {
+    final Uri url = Uri.parse(uri);
+
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   Future<void> signOut() async {

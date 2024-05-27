@@ -133,7 +133,12 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                       const Divider(height: 0),
                       ListTile(
-                        onTap: () {},
+                        onTap: () async {
+                          Navigator.pop(context);
+
+                          //TODO: 聯絡我們的連結
+                          await provider.navToURL(uri: "");
+                        },
                         leading: const Icon(Symbols.contact_support_rounded),
                         title: Text("聯絡我們",
                             style: textgetter.bodyLarge
@@ -164,13 +169,16 @@ class _AccountPageState extends State<AccountPage> {
                                     TextButton(
                                       onPressed: () async {
                                         Navigator.pop(context);
-                                        final Uri url = Uri.parse(
-                                            "https://forms.gle/313dSVb5tPEFeUDY8");
+                                        await provider.navToURL(
+                                            uri:
+                                                "https://forms.gle/313dSVb5tPEFeUDY8");
+                                        // final Uri url = Uri.parse(
+                                        //     "https://forms.gle/313dSVb5tPEFeUDY8");
 
-                                        if (!await launchUrl(url)) {
-                                          throw Exception(
-                                              'Could not launch $url');
-                                        }
+                                        // if (!await launchUrl(url)) {
+                                        //   throw Exception(
+                                        //       'Could not launch $url');
+                                        // }
                                       },
                                       child: const Text("確定"),
                                     ),
