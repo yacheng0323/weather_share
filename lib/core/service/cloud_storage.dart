@@ -64,7 +64,7 @@ class CloudStorage extends ChangeNotifier {
       await _fireStoreDB.collection("users").doc(uid).update(userAttributes);
 
       return true;
-    } catch (err, s) {
+    } catch (err) {
       log("$err");
       return false;
     }

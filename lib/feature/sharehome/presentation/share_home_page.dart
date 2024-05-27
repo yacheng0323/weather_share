@@ -37,6 +37,7 @@ class _ShareHomePageState extends State<ShareHomePage> {
   @override
   Widget build(BuildContext context) {
     final TextGetter textgetter = TextGetter(context);
+    // ignore: prefer_const_constructors
     final Padding gap = Padding(padding: EdgeInsets.all(4));
 
     return ChangeNotifierProvider(
@@ -150,135 +151,139 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                   ),
                                 ),
                                 // gap,
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      IconButton(
-                                        padding: EdgeInsets.all(8),
-                                        constraints: BoxConstraints(),
-                                        iconSize: 20,
-                                        onPressed: () async {
-                                          await provider.toggleLike(
-                                              postId: item.postId ?? "",
-                                              article: item,
-                                              like: !item.isLike!);
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      padding: const EdgeInsets.all(8),
+                                      constraints: const BoxConstraints(),
+                                      iconSize: 20,
+                                      onPressed: () async {
+                                        await provider.toggleLike(
+                                            postId: item.postId ?? "",
+                                            article: item,
+                                            like: !item.isLike!);
+                                      },
+                                      style: const ButtonStyle(
+                                          tapTargetSize:
+                                              MaterialTapTargetSize.shrinkWrap),
+                                      icon: Consumer<ShareHomeViewModel>(
+                                        builder: (context, provider, _) {
+                                          return item.isLike!
+                                              ? const Icon(
+                                                  Icons.favorite,
+                                                  color: Colors.red,
+                                                )
+                                              : const Icon(Icons
+                                                  .favorite_border_outlined);
                                         },
-                                        style: const ButtonStyle(
-                                            tapTargetSize: MaterialTapTargetSize
-                                                .shrinkWrap),
-                                        icon: Consumer<ShareHomeViewModel>(
-                                          builder: (context, provider, _) {
-                                            return item.isLike!
-                                                ? Icon(
-                                                    Icons.favorite,
-                                                    color: Colors.red,
-                                                  )
-                                                : Icon(Icons
-                                                    .favorite_border_outlined);
-                                          },
-                                        ),
                                       ),
-                                      IconButton(
-                                        onPressed: () async {
-                                          final url = item.imageURL ?? "";
-                                          final text = item.content;
+                                    ),
+                                    IconButton(
+                                      onPressed: () async {
+                                        final url = item.imageURL ?? "";
+                                        final text = item.content;
 
-                                          final response =
-                                              await http.get(Uri.parse(url));
-                                          final documentDirectory =
-                                              (await getApplicationDocumentsDirectory())
-                                                  .path;
-                                          final file = File(
-                                              '$documentDirectory/flutter_image.png');
-                                          file.writeAsBytesSync(
-                                              response.bodyBytes);
+                                        final response =
+                                            await http.get(Uri.parse(url));
+                                        final documentDirectory =
+                                            (await getApplicationDocumentsDirectory())
+                                                .path;
+                                        final file = File(
+                                            '$documentDirectory/flutter_image.png');
+                                        file.writeAsBytesSync(
+                                            response.bodyBytes);
 
-                                          Share.shareXFiles([XFile(file.path)],
-                                              text: text);
-                                        },
-                                        iconSize: 20, // desired size
-                                        padding: EdgeInsets.all(8),
-                                        constraints:
-                                            const BoxConstraints(), // override default min size of 48px
-                                        style: const ButtonStyle(
-                                          tapTargetSize: MaterialTapTargetSize
-                                              .shrinkWrap, // the '2023' part
-                                        ),
-                                        icon: const Icon(Icons.share_outlined),
+                                        Share.shareXFiles([XFile(file.path)],
+                                            text: text);
+                                      },
+                                      iconSize: 20, // desired size
+                                      padding: const EdgeInsets.all(8),
+                                      constraints:
+                                          const BoxConstraints(), // override default min size of 48px
+                                      style: const ButtonStyle(
+                                        tapTargetSize: MaterialTapTargetSize
+                                            .shrinkWrap, // the '2023' part
                                       ),
-                                      Spacer(),
-                                      Image.asset(CountryIconResolver
-                                          .resolveCountryIcon(
-                                              item.country ?? "")),
-                                      SizedBox(
-                                        width: 16,
-                                      ),
-                                      Image.asset(WeatherIconResolver
-                                          .resolveWeatherIcon(
-                                              item.weather ?? "")),
-                                      IconButton(
-                                        padding: EdgeInsets.all(8),
-                                        constraints: BoxConstraints(),
-                                        iconSize: 24,
-                                        onPressed: () {
-                                          showCupertinoDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return CupertinoAlertDialog(
-                                                  title: const Text("舉報貼文?"),
-                                                  content:
-                                                      const Text("是否舉報該則貼文?"),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                      child: const Text("取消"),
-                                                    ),
-                                                    TextButton(
-                                                      onPressed: () async {
-                                                        Navigator.pop(context);
-                                                        await provider
-                                                            .reportContent(
-                                                                postId:
-                                                                    item.postId ??
-                                                                        "",
-                                                                article: item);
+                                      icon: const Icon(Icons.share_outlined),
+                                    ),
+                                    const Spacer(),
+                                    Image.asset(
+                                        CountryIconResolver.resolveCountryIcon(
+                                            item.country ?? "")),
+                                    const SizedBox(
+                                      width: 16,
+                                    ),
+                                    Image.asset(
+                                        WeatherIconResolver.resolveWeatherIcon(
+                                            item.weather ?? "")),
+                                    IconButton(
+                                      padding: const EdgeInsets.all(8),
+                                      constraints: const BoxConstraints(),
+                                      iconSize: 24,
+                                      onPressed: () {
+                                        showCupertinoDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return CupertinoAlertDialog(
+                                                title: const Text("舉報貼文?"),
+                                                content:
+                                                    const Text("是否舉報該則貼文?"),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text("取消"),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      Navigator.pop(context);
+                                                      await provider
+                                                          .reportContent(
+                                                              postId:
+                                                                  item.postId ??
+                                                                      "",
+                                                              article: item);
 
-                                                        if (provider
-                                                                .updateArticleResult
-                                                                ?.isSuccess ==
-                                                            true) {
-                                                          ShowSnackBarHelper
-                                                                  .successSnackBar(
-                                                                      context:
-                                                                          context)
-                                                              .showSnackbar(provider
-                                                                      .updateArticleResult
-                                                                      ?.message ??
-                                                                  "");
-                                                        } else {
-                                                          ShowSnackBarHelper
-                                                                  .errorSnackBar(
-                                                                      context:
-                                                                          context)
-                                                              .showSnackbar(provider
-                                                                      .updateArticleResult
-                                                                      ?.message ??
-                                                                  "");
+                                                      if (provider
+                                                              .updateArticleResult
+                                                              ?.isSuccess ==
+                                                          true) {
+                                                        if (!context.mounted) {
+                                                          return;
                                                         }
-                                                      },
-                                                      child: const Text("確定"),
-                                                    ),
-                                                  ],
-                                                );
-                                              });
-                                        },
-                                        icon:
-                                            Image.asset("image/alertIcon.png"),
-                                      ),
-                                    ],
-                                  ),
+
+                                                        ShowSnackBarHelper
+                                                                .successSnackBar(
+                                                                    context:
+                                                                        context)
+                                                            .showSnackbar(provider
+                                                                    .updateArticleResult
+                                                                    ?.message ??
+                                                                "");
+                                                      } else {
+                                                        if (!context.mounted) {
+                                                          return;
+                                                        }
+                                                        ShowSnackBarHelper
+                                                                .errorSnackBar(
+                                                                    context:
+                                                                        context)
+                                                            .showSnackbar(provider
+                                                                    .updateArticleResult
+                                                                    ?.message ??
+                                                                "");
+                                                      }
+                                                    },
+                                                    child: const Text("確定"),
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      icon: Image.asset("image/alertIcon.png"),
+                                    ),
+                                  ],
                                 ),
                                 gap,
                                 Text(

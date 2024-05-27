@@ -211,7 +211,7 @@ class _UserProfileState extends State<UserProfile> {
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           disabledBackgroundColor:
-                                              Color(0xffA9D3FC),
+                                              const Color(0xffA9D3FC),
                                           backgroundColor:
                                               const Color(0xff448BF7),
                                           elevation: 0,
@@ -230,12 +230,15 @@ class _UserProfileState extends State<UserProfile> {
 
                                                 if (provider.isSuccess ==
                                                     true) {
+                                                  if (!context.mounted) return;
                                                   ShowSnackBarHelper
                                                           .successSnackBar(
                                                               context: context)
                                                       .showSnackbar("修改成功！");
                                                   Navigator.pop(context);
                                                 } else {
+                                                  if (!context.mounted) return;
+
                                                   ShowSnackBarHelper
                                                           .errorSnackBar(
                                                               context: context)
@@ -254,13 +257,14 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           provider.loadingStatus
                                               ? Container(
-                                                  padding: EdgeInsets.fromLTRB(
-                                                      8, 0, 0, 0),
+                                                  padding:
+                                                      const EdgeInsets.fromLTRB(
+                                                          8, 0, 0, 0),
                                                   child:
-                                                      CupertinoActivityIndicator(
+                                                      const CupertinoActivityIndicator(
                                                     color: Colors.white,
                                                   ))
-                                              : SizedBox.shrink(),
+                                              : const SizedBox.shrink(),
                                         ],
                                       ),
                                     ),

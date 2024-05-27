@@ -24,7 +24,6 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     final TextGetter textgetter = TextGetter(context);
-    final Divider divider = Divider(height: 0);
 
     return ChangeNotifierProvider(
       create: (context) {
@@ -92,7 +91,7 @@ class _AccountPageState extends State<AccountPage> {
                           AutoRouter.of(context).push(const UserProfileRoute());
                         },
                       ),
-                      divider,
+                      const Divider(height: 0),
                       ListTile(
                         leading: const Icon(Icons.lock_outline),
                         onTap: () {
@@ -106,9 +105,9 @@ class _AccountPageState extends State<AccountPage> {
                               ?.copyWith(color: const Color(0xff787878)),
                         ),
                       ),
-                      divider,
+                      const Divider(height: 0),
                       ListTile(
-                        leading: Icon(Symbols.post),
+                        leading: const Icon(Symbols.post),
                         title: Text(
                           "管理貼文",
                           style: textgetter.bodyLarge
@@ -120,9 +119,9 @@ class _AccountPageState extends State<AccountPage> {
                               shareHomeViewModel: widget.shareHomeViewModel));
                         },
                       ),
-                      divider,
+                      const Divider(height: 0),
                       ListTile(
-                        leading: Icon(Symbols.unknown_document_sharp),
+                        leading: const Icon(Symbols.unknown_document_sharp),
                         title: Text(
                           "隱私權政策",
                           style: textgetter.bodyLarge
@@ -132,7 +131,7 @@ class _AccountPageState extends State<AccountPage> {
                           ShowPrivacyDialog(context: context).call();
                         },
                       ),
-                      divider,
+                      const Divider(height: 0),
                       ListTile(
                         onTap: () {},
                         leading: const Icon(Symbols.contact_support_rounded),
@@ -140,7 +139,7 @@ class _AccountPageState extends State<AccountPage> {
                             style: textgetter.bodyLarge
                                 ?.copyWith(color: const Color(0xff787878))),
                       ),
-                      divider,
+                      const Divider(height: 0),
                       ListTile(
                         leading: const Icon(Icons.person_off_rounded),
                         title: Text(
@@ -180,7 +179,7 @@ class _AccountPageState extends State<AccountPage> {
                               });
                         },
                       ),
-                      divider,
+                      const Divider(height: 0),
                       ListTile(
                         leading: const Icon(Icons.logout_outlined),
                         title: Text(
@@ -204,7 +203,8 @@ class _AccountPageState extends State<AccountPage> {
                                     TextButton(
                                       onPressed: () async {
                                         await provider.signOut();
-                                        // Navigator.pop(context);
+
+                                        if (!context.mounted) return;
                                         AutoRouter.of(context).replaceAll(
                                             [const LoginPageRoute()]);
                                       },
@@ -215,7 +215,7 @@ class _AccountPageState extends State<AccountPage> {
                               });
                         },
                       ),
-                      divider,
+                      const Divider(height: 0),
                     ],
                   ),
                 ],

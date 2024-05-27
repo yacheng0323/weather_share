@@ -114,9 +114,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                               errorStyle: textgetter.bodyMedium
                                                   ?.copyWith(color: Colors.red),
                                               contentPadding:
-                                                  EdgeInsets.fromLTRB(
+                                                  const EdgeInsets.fromLTRB(
                                                       8, 4, 4, 4),
-                                              border: OutlineInputBorder(
+                                              border: const OutlineInputBorder(
                                                 borderSide: BorderSide.none,
                                               )),
                                           validator: (value) {
@@ -138,7 +138,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     width: MediaQuery.of(context).size.width,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color(0xff448BF7),
+                                          backgroundColor:
+                                              const Color(0xff448BF7),
                                           elevation: 0,
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -152,12 +153,16 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                           if (provider.forgotPasswordResult
                                                   ?.isSuccess ==
                                               true) {
+                                            if (!context.mounted) return;
+
                                             ShowSnackBarHelper.successSnackBar(
                                                     context: context)
                                                 .showSnackbar(
                                                     "已向您輸入的電子郵件地址發送驗證信件");
                                             Navigator.pop(context);
                                           } else {
+                                            if (!context.mounted) return;
+
                                             ShowSnackBarHelper.errorSnackBar(
                                                     context: context)
                                                 .showSnackbar(provider

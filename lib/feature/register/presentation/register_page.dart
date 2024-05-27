@@ -192,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                             backgroundColor:
                                                 const Color(0xff448BF7),
                                             disabledBackgroundColor:
-                                                Color(0xffA9D3FC),
+                                                const Color(0xffA9D3FC),
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -227,6 +227,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                                             .registeredResult
                                                             ?.isRegistered ==
                                                         true) {
+                                                      if (!context.mounted) {
+                                                        return;
+                                                      }
+
                                                       ShowSnackBarHelper
                                                               .successSnackBar(
                                                                   context:
@@ -235,6 +239,10 @@ class _RegisterPageState extends State<RegisterPage> {
                                                               "註冊成功！");
                                                       Navigator.pop(context);
                                                     } else {
+                                                      if (!context.mounted) {
+                                                        return;
+                                                      }
+
                                                       ShowSnackBarHelper
                                                               .errorSnackBar(
                                                                   context:
@@ -259,15 +267,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                             ),
                                             provider.loadingStatus
                                                 ? Container(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            8, 0, 0, 0),
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(8, 0, 0, 0),
                                                     child:
-                                                        CupertinoActivityIndicator(
+                                                        const CupertinoActivityIndicator(
                                                       color: Colors.white,
                                                     ),
                                                   )
-                                                : SizedBox.shrink(),
+                                                : const SizedBox.shrink(),
                                           ],
                                         ),
                                       ),
@@ -441,11 +448,11 @@ class _RegisterPageState extends State<RegisterPage> {
                     provider.confirmPasswordVisible!
                         ? Icons.visibility_off
                         : Icons.visibility,
-                    color: Color(0xff2E2E2E),
+                    color: const Color(0xff2E2E2E),
                   ),
                 ),
                 errorStyle: textgetter.bodyMedium?.copyWith(color: Colors.red),
-                contentPadding: EdgeInsets.fromLTRB(8, 4, 4, 4),
+                contentPadding: const EdgeInsets.fromLTRB(8, 4, 4, 4),
                 border: const OutlineInputBorder(
                   borderSide: BorderSide.none,
                 )),

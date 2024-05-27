@@ -23,21 +23,21 @@ class ShowPrivacyDialog {
             child: Text(
               "隱私權政策",
               style: textgetter.headlineMedium?.copyWith(
-                  color: Color(0xff5A5A5A),
+                  color: const Color(0xff5A5A5A),
                   decoration: TextDecoration.underline,
-                  decorationColor: Color(0xff5A5A5A)),
+                  decorationColor: const Color(0xff5A5A5A)),
             ),
           ),
           content: Container(
             width: MediaQuery.of(context).size.width * 0.8,
-            padding: EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
+            padding: const EdgeInsets.fromLTRB(0, 8.0, 0, 8.0),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   StyledText(
                     text: privacyPolicy,
                     style: textgetter.bodyMedium
-                        ?.copyWith(color: Color(0xff385459)),
+                        ?.copyWith(color: const Color(0xff385459)),
                     tags: {
                       'bold': StyledTextTag(
                           style: textgetter.bodyMedium

@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -76,7 +75,7 @@ class _ManageArticleState extends State<ManageArticle> {
                               final item = provider.articleList[index];
 
                               return ListTile(
-                                contentPadding: EdgeInsets.symmetric(
+                                contentPadding: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 16),
                                 leading: CachedNetworkImage(
                                   imageUrl: item.imageURL ?? "",
@@ -84,9 +83,9 @@ class _ManageArticleState extends State<ManageArticle> {
                                   height: 50,
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) =>
-                                      CupertinoActivityIndicator(),
+                                      const CupertinoActivityIndicator(),
                                   errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
+                                      const Icon(Icons.error),
                                 ),
                                 title: Text(
                                   item.nickName ?? "",
@@ -139,11 +138,15 @@ class _ManageArticleState extends State<ManageArticle> {
                                                 if (provider.deleteArticleResult
                                                         ?.isSuccess ==
                                                     true) {
+                                                  if (!context.mounted) return;
+
                                                   ShowSnackBarHelper
                                                           .successSnackBar(
                                                               context: context)
                                                       .showSnackbar("刪除成功");
                                                 } else {
+                                                  if (!context.mounted) return;
+
                                                   ShowSnackBarHelper
                                                           .errorSnackBar(
                                                               context: context)

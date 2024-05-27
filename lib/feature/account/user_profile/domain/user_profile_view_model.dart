@@ -77,6 +77,7 @@ class UserProfileViewModel extends ChangeNotifier {
   }
 
   bool isUrl(String path) {
+    // ignore: prefer_const_declarations
     final urlPattern = r'^https?:\/\/';
     return RegExp(urlPattern).hasMatch(path);
   }

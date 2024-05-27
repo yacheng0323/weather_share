@@ -1,3 +1,4 @@
+// ignore: file_names
 class SignInResult {
   final bool isSignIn;
   final String? errorMessage;

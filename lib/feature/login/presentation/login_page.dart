@@ -115,8 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                                         }
                                       },
                                       child: Container(
-                                        margin:
-                                            EdgeInsets.fromLTRB(0, 40, 0, 0),
+                                        margin: const EdgeInsets.fromLTRB(
+                                            0, 40, 0, 0),
                                         width: 150,
                                         height: 150,
                                         alignment: Alignment.center,
@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                                             borderRadius:
                                                 BorderRadius.circular(75),
                                             border: Border.all(
-                                                color: Color(0xff62B4ff),
+                                                color: const Color(0xff62B4ff),
                                                 width: 4)),
                                         child: ClipRRect(
                                             child: Image.asset(
@@ -134,9 +134,9 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     Container(
-                                      padding:
-                                          EdgeInsets.fromLTRB(45, 0, 45, 0),
-                                      margin: EdgeInsets.only(top: 60),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          45, 0, 45, 0),
+                                      margin: const EdgeInsets.only(top: 60),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -150,7 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     ?.copyWith(
                                                         color: Colors.white)),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 12,
                                           ),
                                           Expanded(
@@ -172,14 +172,15 @@ class _LoginPageState extends State<LoginPage> {
                                                 filled: true,
                                                 fillColor: Colors.white,
                                                 contentPadding:
-                                                    EdgeInsets.fromLTRB(
+                                                    const EdgeInsets.fromLTRB(
                                                         8, 4, 4, 4),
                                                 errorStyle: textgetter
                                                     .bodyMedium
                                                     ?.copyWith(
                                                   color: Colors.red,
                                                 ),
-                                                border: OutlineInputBorder(
+                                                border:
+                                                    const OutlineInputBorder(
                                                   borderSide: BorderSide.none,
                                                 )),
                                             validator: (value) {
@@ -195,9 +196,9 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     Container(
-                                      padding:
-                                          EdgeInsets.fromLTRB(45, 0, 45, 0),
-                                      margin: EdgeInsets.only(top: 8),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          45, 0, 45, 0),
+                                      margin: const EdgeInsets.only(top: 8),
                                       child: Row(
                                         children: [
                                           SizedBox(
@@ -207,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                                                     ?.copyWith(
                                                         color: Colors.white)),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 12,
                                           ),
                                           Expanded(
@@ -230,7 +231,8 @@ class _LoginPageState extends State<LoginPage> {
                                                     provider.passwordVisible!
                                                         ? Icons.visibility_off
                                                         : Icons.visibility,
-                                                    color: Color(0xff2E2E2E),
+                                                    color:
+                                                        const Color(0xff2E2E2E),
                                                   ),
                                                   onPressed: () {
                                                     provider
@@ -238,14 +240,15 @@ class _LoginPageState extends State<LoginPage> {
                                                   },
                                                 ),
                                                 contentPadding:
-                                                    EdgeInsets.fromLTRB(
+                                                    const EdgeInsets.fromLTRB(
                                                         8, 4, 4, 4),
                                                 errorStyle: textgetter
                                                     .bodyMedium
                                                     ?.copyWith(
                                                   color: Colors.red,
                                                 ),
-                                                border: OutlineInputBorder(
+                                                border:
+                                                    const OutlineInputBorder(
                                                   borderSide: BorderSide.none,
                                                 )),
                                             validator: (value) {
@@ -271,16 +274,16 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     Container(
-                                      padding:
-                                          EdgeInsets.fromLTRB(45, 0, 45, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          45, 0, 45, 0),
                                       alignment: Alignment.centerRight,
-                                      margin: EdgeInsets.only(top: 4),
+                                      margin: const EdgeInsets.only(top: 4),
                                       child: TextButton(
                                         style: TextButton.styleFrom(
                                             padding: EdgeInsets.zero),
                                         onPressed: () {
-                                          AutoRouter.of(context)
-                                              .push(ForgotPasswordPageRoute());
+                                          AutoRouter.of(context).push(
+                                              const ForgotPasswordPageRoute());
                                         },
                                         child: Text(
                                           "忘記密碼",
@@ -290,15 +293,16 @@ class _LoginPageState extends State<LoginPage> {
                                       ),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(top: 64),
-                                      padding:
-                                          EdgeInsets.fromLTRB(45, 0, 45, 0),
+                                      margin: const EdgeInsets.only(top: 64),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          45, 0, 45, 0),
                                       width: MediaQuery.of(context).size.width,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             disabledBackgroundColor:
-                                                Color(0xffA9D3FC),
-                                            backgroundColor: Color(0xff448BF7),
+                                                const Color(0xffA9D3FC),
+                                            backgroundColor:
+                                                const Color(0xff448BF7),
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -319,6 +323,9 @@ class _LoginPageState extends State<LoginPage> {
                                                   if (provider.signInResult
                                                           ?.isSignIn ==
                                                       true) {
+                                                    if (!context.mounted) {
+                                                      return;
+                                                    }
                                                     ShowSnackBarHelper
                                                             .successSnackBar(
                                                                 context:
@@ -327,6 +334,10 @@ class _LoginPageState extends State<LoginPage> {
                                                     AutoRouter.of(context).replace(
                                                         const ShareHomePageRoute());
                                                   } else {
+                                                    if (!context.mounted) {
+                                                      return;
+                                                    }
+
                                                     ShowSnackBarHelper
                                                             .errorSnackBar(
                                                                 context:
@@ -349,26 +360,26 @@ class _LoginPageState extends State<LoginPage> {
                                             ),
                                             provider.loadingStatus
                                                 ? Container(
-                                                    padding:
-                                                        EdgeInsets.fromLTRB(
-                                                            8, 0, 0, 0),
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(8, 0, 0, 0),
                                                     child:
-                                                        CupertinoActivityIndicator(
+                                                        const CupertinoActivityIndicator(
                                                       color: Colors.white,
                                                     ))
-                                                : SizedBox.shrink(),
+                                                : const SizedBox.shrink(),
                                           ],
                                         ),
                                       ),
                                     ),
                                     Container(
-                                      margin: EdgeInsets.only(top: 4),
-                                      padding:
-                                          EdgeInsets.fromLTRB(45, 0, 45, 0),
+                                      margin: const EdgeInsets.only(top: 4),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          45, 0, 45, 0),
                                       width: MediaQuery.of(context).size.width,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xff448BF7),
+                                            backgroundColor:
+                                                const Color(0xff448BF7),
                                             elevation: 0,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:

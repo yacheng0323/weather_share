@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:weather_share/feature/sharehome/data/user_model.dart';
 
 class ArticleModel {
   final String? author;

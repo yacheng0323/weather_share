@@ -64,7 +64,7 @@ class _PublishPageState extends State<PublishPage> {
                                   title: const Text("確定要放棄編輯貼文嗎?"),
                                   actions: [
                                     CupertinoActionSheetAction(
-                                      child: Text("取消"),
+                                      child: const Text("取消"),
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
@@ -153,7 +153,8 @@ class _PublishPageState extends State<PublishPage> {
                                             "新增圖片",
                                             style: textgetter.bodyMedium
                                                 ?.copyWith(
-                                                    color: Color(0xffAAAAAA)),
+                                                    color: const Color(
+                                                        0xffAAAAAA)),
                                           )
                                         ],
                                       ),
@@ -171,7 +172,7 @@ class _PublishPageState extends State<PublishPage> {
                           minLines: 10,
                           maxLines: 300,
                           style: textgetter.bodyLarge
-                              ?.copyWith(color: Color(0xff2E2E2E)),
+                              ?.copyWith(color: const Color(0xff2E2E2E)),
                           onChanged: (value) {
                             provider.onChangeContent(value: value);
                           },
@@ -326,11 +327,14 @@ class _PublishPageState extends State<PublishPage> {
                               await provider.publish();
 
                               if (provider.publishResult?.isPublished == true) {
+                                if (!context.mounted) return;
+
                                 ShowSnackBarHelper.successSnackBar(
                                         context: context)
                                     .showSnackbar("新增貼文成功！");
                                 await widget.shareHomeViewModel.getAllArticle();
 
+                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                               }
                             },

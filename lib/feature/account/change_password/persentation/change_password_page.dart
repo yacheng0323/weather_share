@@ -310,11 +310,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                           if (provider.changePasswordResult
                                                   ?.isChanged ==
                                               true) {
+                                            if (!context.mounted) return;
+
                                             ShowSnackBarHelper.successSnackBar(
                                                     context: context)
                                                 .showSnackbar("修改密碼成功");
                                             Navigator.pop(context);
                                           } else {
+                                            if (!context.mounted) return;
+
                                             ShowSnackBarHelper.errorSnackBar(
                                                     context: context)
                                                 .showSnackbar(provider
@@ -323,6 +327,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                                     "");
                                           }
                                         } else {
+                                          if (!context.mounted) return;
+
                                           ShowSnackBarHelper.errorSnackBar(
                                                   context: context)
                                               .showSnackbar(provider
