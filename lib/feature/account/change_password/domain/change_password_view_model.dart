@@ -6,6 +6,8 @@ import 'package:weather_share/entities/remote/validate_password_result.dart';
 final authServiceProvider = AuthServices();
 
 class ChangePasswordViewModel extends ChangeNotifier {
+  bool loadingStatus = false;
+
   ValidatePasswordResult? validatePasswordResult;
 
   ChangePasswordResult? changePasswordResult;
@@ -37,15 +39,21 @@ class ChangePasswordViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  //* 驗證舊密碼是否正確
   Future<void> validatePassword({required String password}) async {
     validatePasswordResult =
         await authServiceProvider.validateOldPassword(password: password);
     notifyListeners();
   }
 
+  //* 送出修改密碼
   Future<void> changePassword({required String newPassword}) async {
+    loadingStatus = true;
+    notifyListeners();
     changePasswordResult =
         await authServiceProvider.changePassword(newPassword: newPassword);
+    loadingStatus = false;
+
     notifyListeners();
   }
 }

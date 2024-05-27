@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -338,10 +339,27 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                         }
                                       }
                                     },
-                                    child: Text(
-                                      "送出",
-                                      style: textgetter.bodyMedium
-                                          ?.copyWith(color: Colors.white),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "送出",
+                                          style: textgetter.bodyMedium
+                                              ?.copyWith(color: Colors.white),
+                                        ),
+                                        provider.loadingStatus
+                                            ? Container(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        8, 0, 0, 0),
+                                                child:
+                                                    const CupertinoActivityIndicator(
+                                                  color: Colors.white,
+                                                ),
+                                              )
+                                            : const SizedBox.shrink(),
+                                      ],
                                     ),
                                   ),
                                 ),

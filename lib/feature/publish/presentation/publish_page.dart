@@ -311,6 +311,7 @@ class _PublishPageState extends State<PublishPage> {
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(4)),
+                              disabledBackgroundColor: const Color(0xffA9D3FC),
                               backgroundColor: const Color(0xff448EF7),
                             ),
                             onPressed: () async {
@@ -338,10 +339,24 @@ class _PublishPageState extends State<PublishPage> {
                                 Navigator.pop(context);
                               }
                             },
-                            child: Text(
-                              "發表",
-                              style: textgetter.bodyMedium
-                                  ?.copyWith(color: Colors.white),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "發表",
+                                  style: textgetter.bodyMedium
+                                      ?.copyWith(color: Colors.white),
+                                ),
+                                provider.loadingStatus
+                                    ? Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            8, 0, 0, 0),
+                                        child: const CupertinoActivityIndicator(
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : const SizedBox.shrink(),
+                              ],
                             ),
                           ),
                         ),
