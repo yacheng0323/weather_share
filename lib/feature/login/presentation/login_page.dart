@@ -98,20 +98,20 @@ class _LoginPageState extends State<LoginPage> {
                                       onLongPress: () {
                                         if (kDebugMode) {
                                           log("debug mode");
-                                          // emailController.value =
-                                          //     const TextEditingValue(
-                                          //         text: "ppp222@gmail.com");
-
-                                          // passwordController.value =
-                                          //     const TextEditingValue(
-                                          //         text: "pp111111");
                                           emailController.value =
                                               const TextEditingValue(
-                                                  text: "ivan.lee@itstar.tw");
+                                                  text: "ppp222@gmail.com");
 
                                           passwordController.value =
                                               const TextEditingValue(
-                                                  text: "aa111111");
+                                                  text: "pp111111");
+                                          // emailController.value =
+                                          //     const TextEditingValue(
+                                          //         text: "ivan.lee@itstar.tw");
+
+                                          // passwordController.value =
+                                          //     const TextEditingValue(
+                                          //         text: "aa111111");
                                         }
                                       },
                                       child: Container(
