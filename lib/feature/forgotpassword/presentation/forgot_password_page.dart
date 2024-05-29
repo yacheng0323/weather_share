@@ -132,8 +132,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.only(top: 60),
-                                    padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
+                                    margin: const EdgeInsets.only(top: 60),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(45, 0, 45, 0),
                                     width: MediaQuery.of(context).size.width,
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(

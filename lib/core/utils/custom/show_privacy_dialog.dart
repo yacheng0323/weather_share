@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
-import 'package:styled_text/tags/styled_text_tag.dart';
-import 'package:styled_text/widgets/styled_text.dart';
-import 'package:weather_share/core/styles/textgetter.dart';
+// import 'package:flutter/material.dart';
+// import 'package:styled_text/tags/styled_text_tag.dart';
+// import 'package:styled_text/widgets/styled_text.dart';
+// import 'package:weather_share/core/styles/textgetter.dart';
 
 // class ShowPrivacyDialog {
 //   final BuildContext context;

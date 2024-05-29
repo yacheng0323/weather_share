@@ -3,11 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_share/core/const.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
-import 'package:weather_share/core/utils/custom/show_privacy_dialog.dart';
 import 'package:weather_share/core/utils/custom/show_snack.bar.dart';
 import 'package:weather_share/feature/register/domain/register_view_model.dart';
 
