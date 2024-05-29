@@ -28,8 +28,8 @@ class AccountViewModel extends ChangeNotifier {
       _nickName = data["nickName"] ?? "";
       _avatar = data["avatar"];
     } else if (result.isError) {
-      _email = "信箱";
-      _nickName = "暱稱";
+      _email = "Email";
+      _nickName = "Nickname";
       _avatar = null;
     }
 

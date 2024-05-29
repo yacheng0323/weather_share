@@ -47,7 +47,7 @@ class _UserProfileState extends State<UserProfile> {
               appBar: AppBar(
                 iconTheme: const IconThemeData(color: Colors.white),
                 title: Text(
-                  "修改會員資料",
+                  "Edit Member Information",
                   style: textgetter.titleLarge?.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w700),
                 ),
@@ -87,10 +87,12 @@ class _UserProfileState extends State<UserProfile> {
                                           context: context,
                                           builder: (context) =>
                                               CupertinoActionSheet(
-                                            title: const Text("請選擇上傳方式"),
+                                            title: const Text(
+                                                "Please select upload method"),
                                             actions: [
                                               CupertinoActionSheetAction(
-                                                child: const Text('從圖片庫'),
+                                                child: const Text(
+                                                    'From Photo Library'),
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                   provider.setImage(
@@ -98,7 +100,7 @@ class _UserProfileState extends State<UserProfile> {
                                                 },
                                               ),
                                               CupertinoActionSheetAction(
-                                                child: const Text('拍照'),
+                                                child: const Text('Take Photo'),
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                   provider.setImage(
@@ -149,7 +151,7 @@ class _UserProfileState extends State<UserProfile> {
                                                       padding:
                                                           EdgeInsets.all(2)),
                                                   Text(
-                                                    "選擇圖片",
+                                                    "Select Image",
                                                     style: textgetter.bodyMedium
                                                         ?.copyWith(
                                                             color: const Color(
@@ -166,8 +168,8 @@ class _UserProfileState extends State<UserProfile> {
                                     child: Row(
                                       children: [
                                         SizedBox(
-                                          width: 30,
-                                          child: Text("暱稱",
+                                          width: 70,
+                                          child: Text("Nickname",
                                               style: textgetter.bodyMedium
                                                   ?.copyWith(
                                                       color: Colors.white)),
@@ -195,7 +197,7 @@ class _UserProfileState extends State<UserProfile> {
                                           validator: (value) {
                                             if (value == null ||
                                                 value.isEmpty) {
-                                              return "暱稱為必填欄位喔";
+                                              return "Nickname is a required field.";
                                             }
                                             return null;
                                           },
@@ -234,7 +236,8 @@ class _UserProfileState extends State<UserProfile> {
                                                   ShowSnackBarHelper
                                                           .successSnackBar(
                                                               context: context)
-                                                      .showSnackbar("修改成功！");
+                                                      .showSnackbar(
+                                                          "Modification Successful!");
                                                   Navigator.pop(context);
                                                 } else {
                                                   if (!context.mounted) return;
@@ -242,7 +245,8 @@ class _UserProfileState extends State<UserProfile> {
                                                   ShowSnackBarHelper
                                                           .errorSnackBar(
                                                               context: context)
-                                                      .showSnackbar("修改失敗！");
+                                                      .showSnackbar(
+                                                          "Modification Failed!");
                                                 }
                                               }
                                             },
@@ -251,7 +255,7 @@ class _UserProfileState extends State<UserProfile> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "送出",
+                                            "Confirm",
                                             style: textgetter.bodyMedium
                                                 ?.copyWith(color: Colors.white),
                                           ),

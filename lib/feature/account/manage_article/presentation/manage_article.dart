@@ -35,7 +35,7 @@ class _ManageArticleState extends State<ManageArticle> {
           },
         ),
         title: Text(
-          "管理貼文",
+          "Manage Posts",
           style: textgetter.titleLarge
               ?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
         ),
@@ -59,7 +59,7 @@ class _ManageArticleState extends State<ManageArticle> {
                   : provider.articleList.isEmpty
                       ? Center(
                           child: Text(
-                            "目前還沒有任何貼文喔！",
+                            "There are currently no posts!",
                             style: textgetter.titleMedium
                                 ?.copyWith(color: Colors.grey),
                           ),
@@ -120,14 +120,15 @@ class _ManageArticleState extends State<ManageArticle> {
                                       context: context,
                                       builder: (context) {
                                         return CupertinoAlertDialog(
-                                          title: const Text("刪除貼文?"),
-                                          content: const Text("是否刪除該則貼文?"),
+                                          title: const Text("Delete Post?"),
+                                          content: const Text(
+                                              "Do you want to delete this post?"),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
-                                              child: const Text("取消"),
+                                              child: const Text("Cancel"),
                                             ),
                                             TextButton(
                                               onPressed: () async {
@@ -143,7 +144,8 @@ class _ManageArticleState extends State<ManageArticle> {
                                                   ShowSnackBarHelper
                                                           .successSnackBar(
                                                               context: context)
-                                                      .showSnackbar("刪除成功");
+                                                      .showSnackbar(
+                                                          "Post deleted successfully");
                                                 } else {
                                                   if (!context.mounted) return;
 
@@ -156,7 +158,7 @@ class _ManageArticleState extends State<ManageArticle> {
                                                           "");
                                                 }
                                               },
-                                              child: const Text("確定"),
+                                              child: const Text("Confirm"),
                                             ),
                                           ],
                                         );

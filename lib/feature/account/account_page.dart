@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:weather_share/core/const.dart';
 import 'package:weather_share/core/router/app_router.gr.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
 import 'package:weather_share/core/utils/custom/show_privacy_dialog.dart';
@@ -81,7 +82,7 @@ class _AccountPageState extends State<AccountPage> {
                       ListTile(
                         leading: const Icon(Icons.person_2_outlined),
                         title: Text(
-                          "修改會員資料",
+                          "Edit Member Information",
                           style: textgetter.bodyLarge?.copyWith(
                             color: const Color(0xff787878),
                           ),
@@ -100,7 +101,7 @@ class _AccountPageState extends State<AccountPage> {
                               .push(const ChangePasswordPageRoute());
                         },
                         title: Text(
-                          "修改密碼",
+                          "Change Password",
                           style: textgetter.bodyLarge
                               ?.copyWith(color: const Color(0xff787878)),
                         ),
@@ -109,7 +110,7 @@ class _AccountPageState extends State<AccountPage> {
                       ListTile(
                         leading: const Icon(Symbols.post),
                         title: Text(
-                          "管理貼文",
+                          "Manage Posts",
                           style: textgetter.bodyLarge
                               ?.copyWith(color: const Color(0xff787878)),
                         ),
@@ -123,12 +124,14 @@ class _AccountPageState extends State<AccountPage> {
                       ListTile(
                         leading: const Icon(Symbols.unknown_document_sharp),
                         title: Text(
-                          "隱私權政策",
+                          "Privacy Policy",
                           style: textgetter.bodyLarge
                               ?.copyWith(color: const Color(0xff787878)),
                         ),
-                        onTap: () {
-                          ShowPrivacyDialog(context: context).call();
+                        onTap: () async {
+                          Navigator.pop(context);
+
+                          await provider.navToURL(uri: privacyURL);
                         },
                       ),
                       const Divider(height: 0),
@@ -136,11 +139,10 @@ class _AccountPageState extends State<AccountPage> {
                         onTap: () async {
                           Navigator.pop(context);
 
-                          //TODO: 聯絡我們的連結
-                          await provider.navToURL(uri: "");
+                          await provider.navToURL(uri: contactUsURL);
                         },
                         leading: const Icon(Symbols.contact_support_rounded),
-                        title: Text("聯絡我們",
+                        title: Text("Contact Us",
                             style: textgetter.bodyLarge
                                 ?.copyWith(color: const Color(0xff787878))),
                       ),
@@ -148,7 +150,7 @@ class _AccountPageState extends State<AccountPage> {
                       ListTile(
                         leading: const Icon(Icons.person_off_rounded),
                         title: Text(
-                          "註銷帳號",
+                          "Delete Account",
                           style: textgetter.bodyLarge
                               ?.copyWith(color: const Color(0xff787878)),
                         ),
@@ -157,30 +159,24 @@ class _AccountPageState extends State<AccountPage> {
                               context: context,
                               builder: (context) {
                                 return CupertinoAlertDialog(
-                                  title: const Text("確定要註銷帳號嗎"),
-                                  content: const Text("是否確認前往填寫註銷帳號的表單?"),
+                                  title: const Text(
+                                      "Are you sure you want to delete your account?"),
+                                  content: const Text(
+                                      "Do you confirm going to the delete account form?"),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text("取消"),
+                                      child: const Text("Cancel"),
                                     ),
                                     TextButton(
                                       onPressed: () async {
                                         Navigator.pop(context);
                                         await provider.navToURL(
-                                            uri:
-                                                "https://forms.gle/313dSVb5tPEFeUDY8");
-                                        // final Uri url = Uri.parse(
-                                        //     "https://forms.gle/313dSVb5tPEFeUDY8");
-
-                                        // if (!await launchUrl(url)) {
-                                        //   throw Exception(
-                                        //       'Could not launch $url');
-                                        // }
+                                            uri: deleteAccountURL);
                                       },
-                                      child: const Text("確定"),
+                                      child: const Text("Confirm"),
                                     ),
                                   ],
                                 );
@@ -191,7 +187,7 @@ class _AccountPageState extends State<AccountPage> {
                       ListTile(
                         leading: const Icon(Icons.logout_outlined),
                         title: Text(
-                          "登出",
+                          "Log Out",
                           style: textgetter.bodyLarge
                               ?.copyWith(color: const Color(0xff787878)),
                         ),
@@ -200,13 +196,14 @@ class _AccountPageState extends State<AccountPage> {
                               context: context,
                               builder: (context) {
                                 return CupertinoAlertDialog(
-                                  title: const Text("確定要登出嗎?"),
+                                  title: const Text(
+                                      "Are you sure you want to log out?"),
                                   actions: [
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text("取消"),
+                                      child: const Text("Cancel"),
                                     ),
                                     TextButton(
                                       onPressed: () async {
@@ -216,7 +213,7 @@ class _AccountPageState extends State<AccountPage> {
                                         AutoRouter.of(context).replaceAll(
                                             [const LoginPageRoute()]);
                                       },
-                                      child: const Text("確定"),
+                                      child: const Text("Confirm"),
                                     ),
                                   ],
                                 );

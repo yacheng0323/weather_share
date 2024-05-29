@@ -61,16 +61,17 @@ class _PublishPageState extends State<PublishPage> {
                         showCupertinoDialog(
                             context: context,
                             builder: (context) => CupertinoAlertDialog(
-                                  title: const Text("確定要放棄編輯貼文嗎?"),
+                                  title: const Text(
+                                      "Are you sure you want to discard editing this post?"),
                                   actions: [
                                     CupertinoActionSheetAction(
-                                      child: const Text("取消"),
+                                      child: const Text("Cancel"),
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
                                     ),
                                     CupertinoActionSheetAction(
-                                      child: const Text('確定'),
+                                      child: const Text("Confirm"),
                                       onPressed: () {
                                         Navigator.pop(context);
                                         Navigator.pop(context);
@@ -85,7 +86,7 @@ class _PublishPageState extends State<PublishPage> {
                       ))
                 ],
                 title: Text(
-                  "新增貼文",
+                  "Add Post",
                   style: textgetter.titleLarge?.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w700),
                 ),
@@ -107,17 +108,18 @@ class _PublishPageState extends State<PublishPage> {
                             showCupertinoModalPopup(
                               context: context,
                               builder: (context) => CupertinoActionSheet(
-                                title: const Text("請選擇上傳方式"),
+                                title:
+                                    const Text("Please select upload method"),
                                 actions: [
                                   CupertinoActionSheetAction(
-                                    child: const Text('從圖片庫'),
+                                    child: const Text("From Photo Library"),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       provider.setImage(fromCamera: false);
                                     },
                                   ),
                                   CupertinoActionSheetAction(
-                                    child: const Text('拍照'),
+                                    child: const Text("Take Photo"),
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                       provider.setImage(fromCamera: true);
@@ -150,7 +152,7 @@ class _PublishPageState extends State<PublishPage> {
                                           const Padding(
                                               padding: EdgeInsets.all(2)),
                                           Text(
-                                            "新增圖片",
+                                            "Add Image",
                                             style: textgetter.bodyMedium
                                                 ?.copyWith(
                                                     color: const Color(
@@ -177,7 +179,7 @@ class _PublishPageState extends State<PublishPage> {
                             provider.onChangeContent(value: value);
                           },
                           decoration: InputDecoration(
-                              hintText: "輸入文字...",
+                              hintText: "Enter text...",
                               hintStyle: textgetter.bodyMedium
                                   ?.copyWith(color: const Color(0xff787878)),
                               contentPadding:
@@ -193,14 +195,14 @@ class _PublishPageState extends State<PublishPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "天氣",
+                              "Weather",
                               style: textgetter.bodyMedium
                                   ?.copyWith(color: const Color(0xff2E2E2E)),
                             ),
                             DropdownButtonHideUnderline(
                               child: DropdownButton2<WeatherModel>(
                                 isExpanded: true,
-                                hint: Text("請選擇天氣",
+                                hint: Text("Select",
                                     style: textgetter.bodyMedium?.copyWith(
                                         color: const Color(0xff2E2E2E))),
                                 items: provider.weatherList
@@ -248,14 +250,14 @@ class _PublishPageState extends State<PublishPage> {
                               ),
                             ),
                             Text(
-                              "國家",
+                              "Country",
                               style: textgetter.bodyMedium
                                   ?.copyWith(color: const Color(0xff2E2E2E)),
                             ),
                             DropdownButtonHideUnderline(
                               child: DropdownButton2<CountryModel>(
                                 isExpanded: true,
-                                hint: Text('請選擇國家',
+                                hint: Text('Select',
                                     style: textgetter.bodyMedium?.copyWith(
                                         color: const Color(0xff2E2E2E))),
                                 items: provider.countryList
@@ -332,7 +334,7 @@ class _PublishPageState extends State<PublishPage> {
 
                                 ShowSnackBarHelper.successSnackBar(
                                         context: context)
-                                    .showSnackbar("新增貼文成功！");
+                                    .showSnackbar("Post added successfully!");
                                 await widget.shareHomeViewModel.getAllArticle();
 
                                 // ignore: use_build_context_synchronously
@@ -343,7 +345,7 @@ class _PublishPageState extends State<PublishPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "發表",
+                                  "Publish",
                                   style: textgetter.bodyMedium
                                       ?.copyWith(color: Colors.white),
                                 ),

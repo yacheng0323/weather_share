@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:weather_share/core/service/auth_service.dart';
 import 'package:weather_share/core/service/cloud_storage.dart';
 import 'package:weather_share/entities/remote/register_result.dart';
@@ -60,6 +61,14 @@ class RegisterViewModel extends ChangeNotifier {
       registeredResult = result;
       loadingStatus = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> navToURL({required String uri}) async {
+    final Uri url = Uri.parse(uri);
+
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
     }
   }
 }

@@ -124,7 +124,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                                                 .hasMatch(value ?? '');
                                             return !emailValid
-                                                ? "信箱格式錯誤"
+                                                ? "Invalid email format"
                                                 : null;
                                           },
                                         )),
@@ -132,7 +132,30 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                     ),
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.only(top: 100),
+                                    margin: EdgeInsets.only(top: 60),
+                                    padding: EdgeInsets.fromLTRB(45, 0, 45, 0),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            const Color(0xff448BF7),
+                                        elevation: 0,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(4)),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        "Back",
+                                        style: textgetter.bodyMedium
+                                            ?.copyWith(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(top: 4),
                                     padding:
                                         const EdgeInsets.fromLTRB(45, 0, 45, 0),
                                     width: MediaQuery.of(context).size.width,
@@ -158,7 +181,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                             ShowSnackBarHelper.successSnackBar(
                                                     context: context)
                                                 .showSnackbar(
-                                                    "已向您輸入的電子郵件地址發送驗證信件");
+                                                    "A verification email has been sent to the email address you provided.");
                                             Navigator.pop(context);
                                           } else {
                                             if (!context.mounted) return;
@@ -171,11 +194,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                                                     "");
                                           }
                                         }
-                                        // AutoRouter.of(context)
-                                        //     .replace(const HomePageRoute());
                                       },
                                       child: Text(
-                                        "送出",
+                                        "Submit",
                                         style: textgetter.bodyMedium
                                             ?.copyWith(color: Colors.white),
                                       ),

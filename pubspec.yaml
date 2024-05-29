@@ -28,7 +28,6 @@ dependencies:
   dropdown_button2: ^2.3.9
   image_network: ^2.5.6
   share_plus: ^9.0.0 
-  screenshot: ^2.5.0
   http: ^1.2.1 
 
 

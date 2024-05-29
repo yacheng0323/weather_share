@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:screenshot/screenshot.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:weather_share/core/router/app_router.gr.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
@@ -27,7 +26,6 @@ class ShareHomePage extends StatefulWidget {
 
 class _ShareHomePageState extends State<ShareHomePage> {
   GlobalKey<RefreshIndicatorState> refreshIndicatorKey = GlobalKey();
-  ScreenshotController screenshotController = ScreenshotController();
 
   @override
   void dispose() {
@@ -58,7 +56,7 @@ class _ShareHomePageState extends State<ShareHomePage> {
               appBar: AppBar(
                 iconTheme: const IconThemeData(color: Colors.white),
                 title: Text(
-                  "分享首頁",
+                  "Share HomePage",
                   style: textgetter.titleLarge?.copyWith(
                       color: Colors.white, fontWeight: FontWeight.w700),
                 ),
@@ -225,15 +223,16 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                             context: context,
                                             builder: (context) {
                                               return CupertinoAlertDialog(
-                                                title: const Text("舉報貼文?"),
-                                                content:
-                                                    const Text("是否舉報該則貼文?"),
+                                                title:
+                                                    const Text("Report Post?"),
+                                                content: const Text(
+                                                    "Do you want to report this post?"),
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () {
                                                       Navigator.pop(context);
                                                     },
-                                                    child: const Text("取消"),
+                                                    child: const Text("Cancel"),
                                                   ),
                                                   TextButton(
                                                     onPressed: () async {
@@ -275,7 +274,8 @@ class _ShareHomePageState extends State<ShareHomePage> {
                                                                 "");
                                                       }
                                                     },
-                                                    child: const Text("確定"),
+                                                    child:
+                                                        const Text("Confirm"),
                                                   ),
                                                 ],
                                               );

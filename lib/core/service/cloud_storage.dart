@@ -193,14 +193,16 @@ class CloudStorage extends ChangeNotifier {
           List<String>.from(postSnapshot.get("reportCount"));
 
       if (reportCountList.contains(email)) {
-        return UpdateArticleResult(isSuccess: false, message: "已經舉報過此貼文了。");
+        return UpdateArticleResult(
+            isSuccess: false, message: "You have already reported this post.");
       }
       reportCountList.add(email!);
 
       await postRef.update({"reportCount": reportCountList});
-      return UpdateArticleResult(isSuccess: true, message: "舉報成功。");
+      return UpdateArticleResult(
+          isSuccess: true, message: "Report successful.");
     } else {
-      return UpdateArticleResult(isSuccess: false, message: "舉報失敗。");
+      return UpdateArticleResult(isSuccess: false, message: "Report failed.");
     }
   }
 
@@ -217,7 +219,8 @@ class CloudStorage extends ChangeNotifier {
           .set({...publishModel.toMap(), "postId": postId});
       return PublishResult(isPublished: true);
     } catch (e) {
-      return PublishResult(isPublished: false, errorMessage: "發表文章失敗。");
+      return PublishResult(
+          isPublished: false, errorMessage: "Failed to publish post.");
     }
   }
 
@@ -227,7 +230,8 @@ class CloudStorage extends ChangeNotifier {
       await _fireStoreDB.collection("posts").doc(postId).delete();
       return DeleteArticleResult(isSuccess: true);
     } catch (e) {
-      return DeleteArticleResult(isSuccess: false, errorMessage: "刪除失敗。");
+      return DeleteArticleResult(
+          isSuccess: false, errorMessage: "Failed to delete post.");
     }
   }
 }

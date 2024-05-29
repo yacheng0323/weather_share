@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:weather_share/core/const.dart';
 import 'package:weather_share/core/styles/textgetter.dart';
 import 'package:weather_share/core/utils/custom/show_privacy_dialog.dart';
 import 'package:weather_share/core/utils/custom/show_snack.bar.dart';
@@ -112,14 +114,30 @@ class _RegisterPageState extends State<RegisterPage> {
                                         "image/how's_the_weather.png",
                                       )),
                                     ),
-                                    _emailTextFormField(textgetter),
-                                    _passwordTextFormField(
-                                        textgetter, provider),
-                                    _confirmPasswordTextFormField(
-                                        textgetter, provider),
-                                    _nickNameTextFormField(textgetter),
+                                    EmailTextFormField(
+                                        emailController: emailController,
+                                        emailFocusNode: emailFocusNode,
+                                        passwordFocusNode: passwordFocusNode),
+                                    PasswordTextFormField(
+                                        passwordController: passwordController,
+                                        provider: provider,
+                                        passwordFocusNode: passwordFocusNode,
+                                        confirmPasswordFocusNode:
+                                            confirmPasswordFocusNode),
+                                    ConfirmPasswordTextFormField(
+                                        confirmPasswordController:
+                                            confirmPasswordController,
+                                        passwordController: passwordController,
+                                        provider: provider,
+                                        confirmPasswordFocusNode:
+                                            confirmPasswordFocusNode,
+                                        nickNameFocusNode: nickNameFocusNode),
+                                    NickNameTextFormField(
+                                        nicknameController: nicknameController,
+                                        nickNameFocusNode: nickNameFocusNode),
                                     Container(
-                                      padding: const EdgeInsets.only(top: 16),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          45, 16, 45, 0),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -148,35 +166,43 @@ class _RegisterPageState extends State<RegisterPage> {
                                           ),
                                           const Padding(
                                               padding: EdgeInsets.all(4)),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                    text: "已閱讀服務條款及",
+                                          Expanded(
+                                            child: RichText(
+                                              maxLines: 5,
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                      text:
+                                                          "I have read and agree to the Terms of Service &",
+                                                      style: textgetter
+                                                          .bodyMedium
+                                                          ?.copyWith(
+                                                              color: Colors
+                                                                  .white)),
+                                                  TextSpan(
+                                                    text: " Privacy Policy",
                                                     style: textgetter.bodyMedium
                                                         ?.copyWith(
-                                                            color:
-                                                                Colors.white)),
-                                                TextSpan(
-                                                  text: "隱私權政策",
-                                                  style: textgetter.bodyMedium
-                                                      ?.copyWith(
-                                                          color: Colors.white,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .underline,
-                                                          decorationColor:
-                                                              Colors.white),
-                                                  recognizer:
-                                                      TapGestureRecognizer()
-                                                        ..onTap = () {
-                                                          ShowPrivacyDialog(
-                                                                  context:
-                                                                      context)
-                                                              .call();
-                                                        },
-                                                ),
-                                              ],
+                                                            color: Colors.white,
+                                                            decoration:
+                                                                TextDecoration
+                                                                    .underline,
+                                                            decorationColor:
+                                                                Colors.white),
+                                                    recognizer:
+                                                        TapGestureRecognizer()
+                                                          ..onTap = () async {
+                                                            // ShowPrivacyDialog(
+                                                            //         context:
+                                                            //             context)
+                                                            //     .call();
+                                                            await provider.navToURL(
+                                                                uri:
+                                                                    privacyURL);
+                                                          },
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -186,6 +212,30 @@ class _RegisterPageState extends State<RegisterPage> {
                                       margin: const EdgeInsets.only(top: 60),
                                       padding: const EdgeInsets.fromLTRB(
                                           24, 0, 24, 0),
+                                      width: MediaQuery.of(context).size.width,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              const Color(0xff448BF7),
+                                          elevation: 0,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(4)),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text(
+                                          "Back",
+                                          style: textgetter.bodyMedium
+                                              ?.copyWith(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.only(top: 4),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          24, 0, 24, 50),
                                       width: MediaQuery.of(context).size.width,
                                       child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
@@ -211,7 +261,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                                 context:
                                                                     context)
                                                         .showSnackbar(
-                                                            "請確認您已勾選同意隱私權政策及服務條款。");
+                                                            "Please confirm that you have checked the box to agree to the Privacy Policy and Terms of Service.");
                                                   } else {
                                                     await provider.register(
                                                         email: emailController
@@ -236,7 +286,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                                   context:
                                                                       context)
                                                           .showSnackbar(
-                                                              "註冊成功！");
+                                                              "Registration successful!");
                                                       Navigator.pop(context);
                                                     } else {
                                                       if (!context.mounted) {
@@ -260,7 +310,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "註冊",
+                                              "Register",
                                               style: textgetter.bodyMedium
                                                   ?.copyWith(
                                                       color: Colors.white),
@@ -296,16 +346,31 @@ class _RegisterPageState extends State<RegisterPage> {
       },
     );
   }
+}
 
-  //* Email 欄位
-  Widget _emailTextFormField(TextGetter textgetter) {
+//**信箱欄位 */
+class EmailTextFormField extends StatelessWidget {
+  const EmailTextFormField({
+    super.key,
+    required this.emailController,
+    required this.emailFocusNode,
+    required this.passwordFocusNode,
+  });
+  final TextEditingController emailController;
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextGetter textgetter = TextGetter(context);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
       margin: const EdgeInsets.only(top: 60),
       child: Row(
         children: [
           SizedBox(
-            width: 70,
+            width: 75,
             child: Text("*Email",
                 style: textgetter.bodyMedium?.copyWith(color: Colors.white)),
           ),
@@ -334,7 +399,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 final bool emailValid = RegExp(
                         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                     .hasMatch(value ?? '');
-                return !emailValid ? "信箱格式錯誤" : null;
+                return !emailValid ? "Invalid email format" : null;
               },
             ),
           ),
@@ -342,19 +407,34 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+}
 
-  //* 密碼 欄位
+//**密碼欄位 */
+class PasswordTextFormField extends StatelessWidget {
+  const PasswordTextFormField(
+      {super.key,
+      required this.passwordController,
+      required this.provider,
+      required this.passwordFocusNode,
+      required this.confirmPasswordFocusNode});
 
-  Widget _passwordTextFormField(
-      TextGetter textgetter, RegisterViewModel provider) {
+  final TextEditingController passwordController;
+  final RegisterViewModel provider;
+  final FocusNode passwordFocusNode;
+  final FocusNode confirmPasswordFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextGetter textgetter = TextGetter(context);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
       margin: const EdgeInsets.only(top: 8),
       child: Row(
         children: [
           SizedBox(
-            width: 70,
-            child: Text("*密碼",
+            width: 75,
+            child: Text("*Password",
                 style: textgetter.bodyMedium?.copyWith(color: Colors.white)),
           ),
           const SizedBox(
@@ -399,7 +479,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   letterReg.hasMatch(value ?? '') &&
                       numReg.hasMatch(value ?? '');
               return !(isPasswordFormatQualified && isPasswordLengthQualified)
-                  ? "至少8個字元\n由英文與數字組成"
+                  ? "At least 8 characters\nConsists of letters and numbers"
                   : null;
             },
           )),
@@ -407,20 +487,35 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+}
 
-  //* 確認密碼 欄位
-  Widget _confirmPasswordTextFormField(
-    TextGetter textgetter,
-    RegisterViewModel provider,
-  ) {
+//**確認密碼欄位 */
+class ConfirmPasswordTextFormField extends StatelessWidget {
+  const ConfirmPasswordTextFormField(
+      {super.key,
+      required this.confirmPasswordController,
+      required this.passwordController,
+      required this.provider,
+      required this.confirmPasswordFocusNode,
+      required this.nickNameFocusNode});
+  final TextEditingController confirmPasswordController;
+  final TextEditingController passwordController;
+  final RegisterViewModel provider;
+  final FocusNode confirmPasswordFocusNode;
+  final FocusNode nickNameFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextGetter textgetter = TextGetter(context);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
       margin: const EdgeInsets.only(top: 8),
       child: Row(
         children: [
           SizedBox(
-            width: 70,
-            child: Text("*再次確認\n密碼",
+            width: 75,
+            child: Text("*Confirm\nPassword",
                 style: textgetter.bodyMedium?.copyWith(color: Colors.white)),
           ),
           const SizedBox(
@@ -460,26 +555,37 @@ class _RegisterPageState extends State<RegisterPage> {
               bool isSameAsPassword =
                   value?.isNotEmpty == true && value == passwordController.text;
 
-              return !(isSameAsPassword) ? "與密碼不相符" : null;
+              return !(isSameAsPassword) ? "Does not match the password" : null;
             },
           )),
         ],
       ),
     );
   }
+}
 
-  //* 暱稱 欄位
-  Widget _nickNameTextFormField(
-    TextGetter textgetter,
-  ) {
+//**暱稱欄位 */
+class NickNameTextFormField extends StatelessWidget {
+  const NickNameTextFormField(
+      {super.key,
+      required this.nicknameController,
+      required this.nickNameFocusNode});
+
+  final TextEditingController nicknameController;
+  final FocusNode nickNameFocusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    final TextGetter textgetter = TextGetter(context);
+
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 0, 24, 0),
       margin: const EdgeInsets.only(top: 8),
       child: Row(
         children: [
           SizedBox(
-            width: 70,
-            child: Text("*暱稱",
+            width: 75,
+            child: Text("*Nickname",
                 style: textgetter.bodyMedium?.copyWith(color: Colors.white)),
           ),
           const SizedBox(
@@ -501,7 +607,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 )),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "暱稱為必填欄位喔";
+                return "Nickname is a required field.";
               }
               return null;
             },

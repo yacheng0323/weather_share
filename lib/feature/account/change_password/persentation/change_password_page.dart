@@ -48,7 +48,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             appBar: AppBar(
               iconTheme: const IconThemeData(color: Colors.white),
               title: Text(
-                "修改密碼",
+                "Change Password",
                 style: textgetter.titleLarge?.copyWith(
                     color: Colors.white, fontWeight: FontWeight.w700),
               ),
@@ -91,8 +91,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: 60,
-                                        child: Text("舊密碼",
+                                        width: 70,
+                                        child: Text("Old Password",
                                             style: textgetter.bodyMedium
                                                 ?.copyWith(
                                                     color: Colors.white)),
@@ -144,7 +144,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                                   numReg.hasMatch(value ?? '');
                                           return !(isPasswordFormatQualified &&
                                                   isPasswordLengthQualified)
-                                              ? "至少8個字元\n*由英文與數字組成"
+                                              ? "At least 8 characters\nConsists of letters and numbers"
                                               : null;
                                         },
                                       )),
@@ -158,8 +158,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: 60,
-                                        child: Text("新密碼",
+                                        width: 70,
+                                        child: Text("New Password",
                                             style: textgetter.bodyMedium
                                                 ?.copyWith(
                                                     color: Colors.white)),
@@ -211,7 +211,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                                   numReg.hasMatch(value ?? '');
                                           return !(isPasswordFormatQualified &&
                                                   isPasswordLengthQualified)
-                                              ? "至少8個字元\n*由英文與數字組成"
+                                              ? "At least 8 characters\nConsists of letters and numbers"
                                               : null;
                                         },
                                       )),
@@ -225,8 +225,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                   child: Row(
                                     children: [
                                       SizedBox(
-                                        width: 60,
-                                        child: Text("再次確認\n密碼",
+                                        width: 70,
+                                        child: Text("Confirm Password",
                                             style: textgetter.bodyMedium
                                                 ?.copyWith(
                                                     color: Colors.white)),
@@ -274,7 +274,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                                           .text;
 
                                           return !(isSameAsPassword)
-                                              ? "與密碼不相符"
+                                              ? "Does not match the password"
                                               : null;
                                         },
                                       )),
@@ -315,7 +315,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
                                             ShowSnackBarHelper.successSnackBar(
                                                     context: context)
-                                                .showSnackbar("修改密碼成功");
+                                                .showSnackbar(
+                                                    "Password changed successfully");
                                             Navigator.pop(context);
                                           } else {
                                             if (!context.mounted) return;
@@ -344,7 +345,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "送出",
+                                          "Submit",
                                           style: textgetter.bodyMedium
                                               ?.copyWith(color: Colors.white),
                                         ),

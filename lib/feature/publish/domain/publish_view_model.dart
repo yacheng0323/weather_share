@@ -72,18 +72,18 @@ class PublishViewModel extends ChangeNotifier {
   void validateForm() {
     String message = "";
     if (_imagePath == null) {
-      message += "請上傳一張圖片\n";
+      message += "Please upload an image.\n";
     }
 
     if (_content == null) {
-      message += "請輸入貼文內容\n";
+      message += "Please enter post content.\n";
     }
 
     if (_weather == null) {
-      message += "請選擇天氣\n";
+      message += "Please select weather.\n";
     }
     if (_country == null) {
-      message += "請選擇國家";
+      message += "Please select country.";
     }
     _notValidateMessage = message;
     notifyListeners();
@@ -115,8 +115,8 @@ class PublishViewModel extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      publishResult =
-          PublishResult(isPublished: false, errorMessage: "發表文章失敗。");
+      publishResult = PublishResult(
+          isPublished: false, errorMessage: "Failed to publish post.");
       loadingStatus = false;
       notifyListeners();
     }

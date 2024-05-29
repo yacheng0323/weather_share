@@ -25,20 +25,27 @@ class AuthServices extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "invalid-email":
-          return SignInResult(isSignIn: false, errorMessage: "電子郵件地址無效。");
+          return SignInResult(
+              isSignIn: false, errorMessage: "Invalid email address.");
         case "user-not-found":
-          return SignInResult(isSignIn: false, errorMessage: "找不到使用者。");
+          return SignInResult(isSignIn: false, errorMessage: "User not found.");
         case "user-disabled":
-          return SignInResult(isSignIn: false, errorMessage: "使用者帳戶已被禁用。");
+          return SignInResult(
+              isSignIn: false, errorMessage: "User account has been disabled.");
         case "wrong-password":
-          return SignInResult(isSignIn: false, errorMessage: "密碼錯誤。");
+          return SignInResult(
+              isSignIn: false, errorMessage: "Incorrect password.");
         // Firebase auth setting，如果Email enumeration protection (recommended) 有勾選的話，只會拋出這個錯誤
         // 目的是，“找不到該使用者”怕有心人利用這點一直去試帳號。
         case "invalid-credential":
-          return SignInResult(isSignIn: false, errorMessage: "電子郵件地址無效或密碼錯誤。");
+          return SignInResult(
+              isSignIn: false,
+              errorMessage: "Invalid email address or incorrect password.");
         default:
           return SignInResult(
-              isSignIn: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
+              isSignIn: false,
+              errorMessage:
+                  "An unknown error occurred. Please try again later.");
       }
     }
   }
@@ -55,17 +62,23 @@ class AuthServices extends ChangeNotifier {
       switch (e.code) {
         case "email-already-in-use":
           return RegisteredResult(
-              isRegistered: false, errorMessage: "電子郵件地址已被使用。");
+              isRegistered: false,
+              errorMessage: "Email address already in use.");
         case "invalid-email":
           return RegisteredResult(
-              isRegistered: false, errorMessage: "電子郵件地址無效。");
+              isRegistered: false, errorMessage: "Invalid email address.");
         case "operation-not-allowed":
-          return RegisteredResult(isRegistered: false, errorMessage: "操作不被允許。");
+          return RegisteredResult(
+              isRegistered: false, errorMessage: "Operation not allowed.");
         case "weak-password":
-          return RegisteredResult(isRegistered: false, errorMessage: "密碼強度不足。");
+          return RegisteredResult(
+              isRegistered: false,
+              errorMessage: "Password strength insufficient.");
         default:
           return RegisteredResult(
-              isRegistered: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
+              isRegistered: false,
+              errorMessage:
+                  "An unknown error occurred. Please try again later.");
       }
     }
   }
@@ -79,27 +92,34 @@ class AuthServices extends ChangeNotifier {
       switch (e.code) {
         case "invalid-email":
           return ForgotPasswordResult(
-              isSuccess: false, errorMessage: "電子郵件地址無效。");
+              isSuccess: false, errorMessage: "Invalid email address.");
         case "missing-continue-uri":
           return ForgotPasswordResult(
-              isSuccess: false, errorMessage: "請提供請求中的連續網址。");
+              isSuccess: false,
+              errorMessage: "Please provide the requested URL.");
         case "missing-ios-bundle-id":
           return ForgotPasswordResult(
               isSuccess: false,
-              errorMessage: "請提供 iOS 應用程式的 Bundle ID，若提供了 App Store ID。");
+              errorMessage:
+                  "Please provide the Bundle ID for the iOS app, if App Store ID is provided.");
         case "invalid-continue-uri":
           return ForgotPasswordResult(
-              isSuccess: false, errorMessage: "提供的連續網址無效。");
+              isSuccess: false, errorMessage: "The provided URL is invalid.");
         case "unauthorized-continue-uri":
           return ForgotPasswordResult(
               isSuccess: false,
-              errorMessage: "連續網址的域名未被授權。請在 Firebase 控制台中將該域名加入白名單。");
+              errorMessage:
+                  "The domain of the URL is not authorized. Please add the domain to the whitelist in the Firebase console.");
         case "user-not-found":
           return ForgotPasswordResult(
-              isSuccess: false, errorMessage: "找不到與該電子郵件地址相對應的使用者。");
+              isSuccess: false,
+              errorMessage:
+                  "No user corresponding to the email address was found.");
         default:
           return ForgotPasswordResult(
-              isSuccess: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
+              isSuccess: false,
+              errorMessage:
+                  "An unknown error occurred. Please try again later.");
       }
     }
   }
@@ -120,38 +140,51 @@ class AuthServices extends ChangeNotifier {
         switch (e.code) {
           case "user-mismatch":
             return ValidatePasswordResult(
-                isValidate: false, errorMessage: "提供的憑證與當前用戶不匹配。");
+                isValidate: false,
+                errorMessage:
+                    "The provided credentials do not match the current user.");
 
           case "user-not-found":
             return ValidatePasswordResult(
-                isValidate: false, errorMessage: "找不到與提供憑證相對應的用戶。");
+                isValidate: false,
+                errorMessage:
+                    "No user corresponding to the provided credentials was found.");
 
           case "invalid-credential":
             return ValidatePasswordResult(
                 isValidate: false,
                 errorMessage:
-                    "提供的憑證無效。這可能是由於憑證過期或使用了無效的憑證。請檢查您的提供者憑證文檔，確保您傳入了正確的參數。");
+                    "The provided credentials are invalid. This may be due to expired credentials or the use of invalid credentials. Please check your provider credentials documentation and ensure you are passing the correct parameters.");
           case "invalid-email":
             return ValidatePasswordResult(
-                isValidate: false, errorMessage: "提供的電子郵件地址無效。");
+                isValidate: false,
+                errorMessage: "The provided email address is invalid.");
           case "wrong-password":
             return ValidatePasswordResult(
                 isValidate: false,
-                errorMessage: "提供的舊密碼不正確，或與該電子郵件地址關聯的用戶沒有設置密碼。");
+                errorMessage:
+                    "The provided old password is incorrect, or the user associated with the provided email address has not set a password.");
           case "invalid-verification-code":
             return ValidatePasswordResult(
-                isValidate: false, errorMessage: "提供的驗證碼無效。請重新輸入正確的驗證碼。");
+                isValidate: false,
+                errorMessage:
+                    "The provided verification code is invalid. Please re-enter the correct verification code.");
           case "invalid-verification-id":
             return ValidatePasswordResult(
-                isValidate: false, errorMessage: "提供的驗證ID無效。請檢查並重新輸入正確的驗證ID。");
+                isValidate: false,
+                errorMessage:
+                    "The provided verification ID is invalid. Please check and re-enter the correct verification ID.");
           default:
             return ValidatePasswordResult(
-                isValidate: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
+                isValidate: false,
+                errorMessage:
+                    "An unknown error occurred. Please try again later.");
         }
       }
     }
     return ValidatePasswordResult(
-        isValidate: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
+        isValidate: false,
+        errorMessage: "An unknown error occurred. Please try again later.");
   }
 
   Future<ChangePasswordResult> changePassword(
@@ -163,13 +196,19 @@ class AuthServices extends ChangeNotifier {
       switch (e.code) {
         case "weak-password":
           return ChangePasswordResult(
-              isChanged: false, errorMessage: "密碼強度不足，請使用更複雜的密碼。");
+              isChanged: false,
+              errorMessage:
+                  "Password strength is insufficient. Please use a more complex password.");
         case "requires-recent-login":
           return ChangePasswordResult(
-              isChanged: false, errorMessage: "此操作需要最近一次的登入，請重新登入並再試一次。");
+              isChanged: false,
+              errorMessage:
+                  "This operation requires a recent login. Please log in again and try again.");
         default:
           return ChangePasswordResult(
-              isChanged: false, errorMessage: "發生未知錯誤，請稍候再重新嘗試。");
+              isChanged: false,
+              errorMessage:
+                  "An unknown error occurred. Please try again later.");
       }
     }
   }
@@ -180,7 +219,7 @@ class AuthServices extends ChangeNotifier {
       await _auth.signOut();
       return SignOutResult(isSuccess: true);
     } catch (e) {
-      return SignOutResult(isSuccess: false, errorMessage: "登出失敗。");
+      return SignOutResult(isSuccess: false, errorMessage: "Logout failed.");
     }
   }
 }
